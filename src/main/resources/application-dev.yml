@@ -1,0 +1,13 @@
+server:
+  port: 7077
+
+spring:
+
+  # mysql 配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/lic_manager?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+
+
