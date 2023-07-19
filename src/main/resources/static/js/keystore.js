@@ -15,9 +15,7 @@ layui.use('laydate', function () {
 });
 
 $(function () {
-    var page = get("/keystore", {pageSize: 50, currentPage: 1});
-    console.log(page)
-    createTable(page.records);
+    search();
 })
 
 function createTable(records) {
@@ -41,7 +39,7 @@ function createTable(records) {
                     }
                 }
             ]],
-            data: [records],
+            data: records,
             // skin: 'line', // 表格风格
             even: true,// 是否开启隔行背景
             page: false, // 是否显示分页
@@ -64,17 +62,31 @@ function createTable(records) {
 }
 
 function search() {
-    var start = $("#start").val();
-    var end = $("#end").val();
-    var name = $("#name").val();
-
-    console.log(start)
-    console.log(end)
-    console.log(name)
-
-
+    let page = pageSearch(1, 2);
+    createTable(page.records);
+    loadPage(page.total);
 }
 
+function pageSearch(currentPage, pageSize) {
+    let start = $("#start").val();
+    let end = $("#end").val();
+    let name = $("#name").val();
+    if (typeof start != "undefined" && start != null && start !== "") {
+        start = new Date(start).getTime();
+    }
+    if (typeof end != "undefined" && end != null && end !== "") {
+        end = new Date(end).getTime();
+    }
+
+    let pageDTO = {
+        'currentPage': currentPage,
+        'pageSize': pageSize,
+        'startTime': start,
+        'endTime': end,
+        'name': name
+    };
+    return get("/keystore", pageDTO);
+}
 
 function delAll(argument) {
 
@@ -87,8 +99,26 @@ function delAll(argument) {
     });
 }
 
+function loadPage (total) {
+    layui.use(function(){
+        var laypage = layui.laypage;
+        laypage.render({
+            elem: 'page', // 元素 id
+            limit: 2, // 每页显示的条数
+            count: total, // 数据总数
+            limits: [2 ,100, 150],//每页条数的选择项
+            layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'], // 功能布局
+            jump: function(obj, first) {
+                if(!first){
+                    let page = pageSearch(obj.curr, obj.limit);
+                    createTable(page.records);
+                }
+            }
+        });
+    });
 
 
+}
 
 
 

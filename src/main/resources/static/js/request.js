@@ -1,10 +1,30 @@
+$.ajaxSetup({
+    async: false,
+    // headers: {
+    //     'Authorization': 'Bearer ' + token
+    // }
+});
+
 function get(url, params) {
-    var defer = $.Deferred();
+    let data;
     $.get(url, params, function (res) {
-        defer.resolve(callback(res));
+        data = callback(res);
     },'json');
-    return defer.promise();
+    return data;
 }
+
+function post(url, params) {
+    let data;
+    $.post(url, params, function(res){
+        data = callback(res);
+    },'json');
+    return data;
+}
+
+
+
+
+
 
 
 function callback(res) {
