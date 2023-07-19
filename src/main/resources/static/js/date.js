@@ -1,4 +1,7 @@
 function ts2Time(timestamp) {
+    if (typeof timestamp == "undefined" || timestamp == null || timestamp == "") {
+        return '';
+    }
     if (typeof timestamp === 'string') {
         timestamp = Number(timestamp);
     }

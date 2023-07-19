@@ -15,14 +15,20 @@ layui.use('laydate', function () {
 });
 
 $(function () {
+    var page = get("/keystore", {pageSize: 50, currentPage: 1});
+    console.log(page)
+    createTable(page.records);
+})
+
+function createTable(records) {
     layui.use('table', function () {
         var table = layui.table;
 
         // 已知数据渲染
         table.render({
             elem: '#table-data',
-            url: "/keystore",
-            cols: [[ //标题栏
+            //标题栏
+            cols: [[
                 {field: 'id', title: 'ID', sort: true},
                 {field: 'name', title: '名称'},
                 {field: 'validity', title: '有效期(单位:年)'},
@@ -35,28 +41,27 @@ $(function () {
                     }
                 }
             ]],
-            //skin: 'line', // 表格风格
-            //even: true,
-            page: true, // 是否显示分页
-            parseData: function (res) {
-                return {
-                    "code": res.code, //解析接口状态
-                    "msg": res.message, //解析提示文本
-                    "count": res.data.total, //解析数据长度
-                    "data": res.data.records //解析数据列表
-                };
-            },
-            limits: [50, 100, 200],
-            limit: 50, // 每页默认显示的数量
-            request: {
-                pageName: 'currentPage',
-                limitName: 'pageSize',
-            }
+            data: [records],
+            // skin: 'line', // 表格风格
+            even: true,// 是否开启隔行背景
+            page: false, // 是否显示分页
+            // parseData: function (res) {
+            //     return {
+            //         "code": res.code, //解析接口状态
+            //         "msg": res.message, //解析提示文本
+            //         "count": res.data.total, //解析数据长度
+            //         "data": res.data.records //解析数据列表
+            //     };
+            // },
+            // limits: [50, 100, 200],
+            // limit: 50, // 每页默认显示的数量
+            // request: {
+            //     pageName: 'currentPage',
+            //     limitName: 'pageSize',
+            // }
         });
     });
-
-
-})
+}
 
 function search() {
     var start = $("#start").val();
