@@ -14,14 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PageController {
 
-    @RequestMapping("demo")
-    public String demo() {
-        return "demo";
+    @RequestMapping("/index")
+    public String index() {
+        return "index";
     }
 
+    @RequestMapping("/welcome")
+    public String welcome() {
+        return "welcome";
+    }
 
-
-
-
+    @RequestMapping("/")
+    public String login() {
+        return "login";
+    }
 
 }
