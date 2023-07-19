@@ -6,8 +6,8 @@ spring:
     init:
       encoding: UTF-8
       mode: always
-#      schema-locations:
-#        - classpath:sql/kitty.sql
+      schema-locations:
+        - classpath:sqls/lic_manager.sql
 
   # mysql 配置
   datasource:
