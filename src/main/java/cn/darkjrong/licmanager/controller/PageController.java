@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PageController {
 
-    @RequestMapping("/index")
+    @RequestMapping("index")
     public String index() {
         return "index";
     }
 
-    @RequestMapping("/welcome")
+    @RequestMapping("welcome")
     public String welcome() {
         return "welcome";
     }
@@ -28,5 +28,12 @@ public class PageController {
     public String login() {
         return "login";
     }
+
+    @RequestMapping("keystore")
+    public String keystore() {
+        return "keystore";
+    }
+
+
 
 }
