@@ -1,8 +1,11 @@
 package cn.darkjrong.licmanager.mapper;
 
 import cn.darkjrong.licmanager.common.pojo.entity.Keystore;
+import cn.darkjrong.licmanager.common.pojo.query.KeystoreQuery;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -22,6 +25,13 @@ public interface KeystoreMapper extends BaseMapper<Keystore> {
      */
     Keystore findKeystoreByName(@Param("name") String name);
 
+    /**
+     * 查询密钥存储库
+     *
+     * @param query 查询
+     * @return {@link List}<{@link Keystore}>
+     */
+    List<Keystore> findKeystore(KeystoreQuery query);
 
 
 

@@ -2,8 +2,8 @@ package cn.darkjrong.licmanager.service.base.impl;
 
 import cn.darkjrong.licmanager.common.pojo.dto.PageDTO;
 import cn.darkjrong.licmanager.common.pojo.vo.PageVO;
-import cn.darkjrong.licmanager.common.utils.utils.PageableUtils;
-import cn.darkjrong.licmanager.common.utils.utils.PropertyUtils;
+import cn.darkjrong.licmanager.common.utils.PageableUtils;
+import cn.darkjrong.licmanager.common.utils.PropertyUtils;
 import cn.darkjrong.licmanager.service.base.BaseService;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;

@@ -1,4 +1,4 @@
-package cn.darkjrong.licmanager.common.utils.utils;
+package cn.darkjrong.licmanager.common.utils;
 
 import cn.darkjrong.licmanager.common.pojo.vo.PageVO;
 import com.github.pagehelper.PageInfo;

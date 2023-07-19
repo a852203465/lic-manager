@@ -22,6 +22,12 @@ public interface KeystoreService extends BaseService<Keystore, Keystore, Keystor
      */
     void saveKeystore(KeystoreDTO keystoreDTO);
 
+    /**
+     * 修改密钥存储库
+     *
+     * @param keystoreDTO 密钥存储库DTO
+     */
+    void updateKeystore(KeystoreDTO keystoreDTO);
 
 
 }

@@ -55,6 +55,8 @@ public enum ResponseEnum {
     THE_END_TIME_CANNOT_BE_LESS_THAN_OR_EQUAL_TO_THE_START_TIME(1008, "结束时间不能等于小于开始时间"),
     THE_END_TIME_CANNOT_BE_LESS_THAN_OR_EQUAL_TO_THE_CURRENT_TIME(1009, "结束时间不能小于等于当前时间"),
     THE_CODE_CANNOT_BE_EMPTY(1010, "CODE不能为空"),
+    FILE_UPLOAD_EXCEPTION_RETRY(1012, "文件上传异常, 请重试"),
+    FILE_DOES_NOT_EXIST(1013, "文件不存在, 请检查"),
 
     SUBJECT_UNAUTHORIZED(4000, "无权访问:当前用户没有此请求所需权限"),
     USER_NAME_OR_PASSWORD_ERRORS_GREATER_THAN_5_TIMES(4001, "用户名或密码错误次数大于5次,账户已锁定, 请10分钟后再次访问"),

@@ -3,6 +3,7 @@ package cn.darkjrong.licmanager.common.pojo.dto;
 import cn.darkjrong.licmanager.common.pojo.bo.Base;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -38,12 +39,12 @@ public class KeystoreDTO extends Base implements Serializable {
     /**
      * 私钥
      */
-    private byte[] privateKey;
+    private MultipartFile privateKey;
 
     /**
      * 公钥
      */
-    private byte[] publicKey;
+    private MultipartFile publicKey;
 
 
 
