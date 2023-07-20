@@ -62,7 +62,7 @@ function createTable(records) {
 }
 
 function search() {
-    let page = pageSearch(1, 2);
+    let page = pageSearch(1, 50);
     createTable(page.records);
     loadPage(page.total);
 }
@@ -104,9 +104,9 @@ function loadPage (total) {
         var laypage = layui.laypage;
         laypage.render({
             elem: 'page', // 元素 id
-            limit: 2, // 每页显示的条数
+            limit: 50, // 每页显示的条数
             count: total, // 数据总数
-            limits: [2 ,100, 150],//每页条数的选择项
+            limits: [50 ,100, 150],//每页条数的选择项
             layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'], // 功能布局
             jump: function(obj, first) {
                 if(!first){
