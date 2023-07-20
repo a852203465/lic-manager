@@ -27,7 +27,11 @@ function createTable(records) {
             elem: '#table-data',
             //标题栏
             cols: [[
-                {field: 'id', title: 'ID', sort: true},
+                {
+                    fixed: 'left', type: 'checkbox', toolbar: '<td> ' +
+                        '<div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div> ' +
+                        '</td>'
+                },
                 {field: 'name', title: '名称'},
                 {field: 'validity', title: '有效期(单位:年)'},
                 {field: 'password', title: '密码'},
@@ -37,27 +41,28 @@ function createTable(records) {
                     templet: function (row) {
                         return ts2Time(row.createdTime)
                     }
+                },
+                {
+                    fixed: 'right', width: 100, title: '操作', toolbar: '<td class="td-manage">\n' +
+                        '              <a title="编辑"  onclick="operationKeystore(\'编辑\')" href="javascript:;">\n' +
+                        '                <i class="layui-icon">&#xe642;</i>\n' +
+                        '              </a>\n' +
+                        '              <a title="删除" onclick="member_del(this)" href="javascript:;">\n' +
+                        '                <i class="layui-icon">&#xe640;</i>\n' +
+                        '              </a>\n' +
+                        '            </td>'
                 }
             ]],
             data: records,
             // skin: 'line', // 表格风格
             even: true,// 是否开启隔行背景
             page: false, // 是否显示分页
-            // parseData: function (res) {
-            //     return {
-            //         "code": res.code, //解析接口状态
-            //         "msg": res.message, //解析提示文本
-            //         "count": res.data.total, //解析数据长度
-            //         "data": res.data.records //解析数据列表
-            //     };
-            // },
-            // limits: [50, 100, 200],
-            // limit: 50, // 每页默认显示的数量
-            // request: {
-            //     pageName: 'currentPage',
-            //     limitName: 'pageSize',
-            // }
         });
+
+        // 增加点击事件
+        // table.on('row(table-data)', function (obj) {
+        //     console.log(obj.data);
+        // })
     });
 }
 
@@ -65,6 +70,14 @@ function search() {
     let page = pageSearch(1, 50);
     createTable(page.records);
     loadPage(page.total);
+}
+
+function member_del(obj){
+    layer.confirm('确认要删除吗？',function(index){
+        //发异步删除数据
+        $(obj).parents("tr").remove();
+        layer.msg('已删除!',{icon:1,time:1000});
+    });
 }
 
 function pageSearch(currentPage, pageSize) {
@@ -120,8 +133,8 @@ function loadPage(total) {
 
 }
 
-function addKeystore() {
-    var $ = layui.$;
+function operationKeystore(option) {
+    console.log(option);
     var form = layui.form;
 
     layer.open({
@@ -131,8 +144,8 @@ function addKeystore() {
         shadeClose: true,
         shade: 0.4,
         maxmin: true,
-        title: '新增秘钥库',
-        content: $("#keystore-add"),
+        title: option + '秘钥库',
+        content: $('#keystore-option'),
         success: function (index) {
             // 对弹层中的表单进行初始化渲染
             form.render();
