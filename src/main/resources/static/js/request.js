@@ -15,9 +15,16 @@ function get(url, params) {
 
 function post(url, params) {
     let data;
-    $.post(url, params, function(res){
-        data = callback(res);
-    },'json');
+    $.ajax({
+        method: "POST",
+        url: url,
+        async: false,
+        contentType: 'application/json',
+        data: JSON.stringify(params),
+        success: function(res) {
+            data = callback(res);
+        }
+    });
     return data;
 }
 

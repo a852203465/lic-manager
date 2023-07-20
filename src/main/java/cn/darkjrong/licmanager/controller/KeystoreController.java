@@ -37,7 +37,7 @@ public class KeystoreController {
 
     @ApiOperation("添加秘钥库")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseVO<Void> saveKeystore(@Validated KeystoreDTO keystoreDTO) {
+    public ResponseVO<Void> saveKeystore(@Validated @RequestBody KeystoreDTO keystoreDTO) {
         log.info("saveKeystore {}", keystoreDTO.toString());
         keystoreService.saveKeystore(keystoreDTO);
         return ResponseVO.success();
@@ -45,7 +45,7 @@ public class KeystoreController {
 
     @ApiOperation("添加秘钥库")
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseVO<Void> updateKeystore(@Validated KeystoreDTO keystoreDTO) {
+    public ResponseVO<Void> updateKeystore(@Validated @RequestBody KeystoreDTO keystoreDTO) {
         log.info("updateKeystore {}", keystoreDTO.toString());
         keystoreService.updateKeystore(keystoreDTO);
         return ResponseVO.success();

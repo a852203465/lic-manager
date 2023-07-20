@@ -74,17 +74,17 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.4.3.4</version>
+            <version>3.5.3.1</version>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.5.1</version>
+            <version>3.5.3.1</version>
         </dependency>
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.6</version>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
@@ -100,7 +100,11 @@
             <artifactId>fastjson</artifactId>
             <version>2.0.32</version>
         </dependency>
-
+        <dependency>
+            <groupId>cn.darkjrong</groupId>
+            <artifactId>license-creator-spring-boot-starter</artifactId>
+            <version>1.0</version>
+        </dependency>
 
     </dependencies>
 

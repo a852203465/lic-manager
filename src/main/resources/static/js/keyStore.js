@@ -99,17 +99,17 @@ function delAll(argument) {
     });
 }
 
-function loadPage (total) {
-    layui.use(function(){
+function loadPage(total) {
+    layui.use(function () {
         var laypage = layui.laypage;
         laypage.render({
             elem: 'page', // 元素 id
             limit: 50, // 每页显示的条数
             count: total, // 数据总数
-            limits: [50 ,100, 150],//每页条数的选择项
+            limits: [50, 100, 150],//每页条数的选择项
             layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'], // 功能布局
-            jump: function(obj, first) {
-                if(!first){
+            jump: function (obj, first) {
+                if (!first) {
                     let page = pageSearch(obj.curr, obj.limit);
                     createTable(page.records);
                 }
@@ -120,7 +120,34 @@ function loadPage (total) {
 
 }
 
+function addKeystore() {
+    var $ = layui.$;
+    var form = layui.form;
 
+    layer.open({
+        type: 1,
+        area: [($(window).width()*0.4)+'px', ($(window).height() - 450) +'px'],
+        fix: false, //不固定
+        shadeClose: true,
+        shade: 0.4,
+        maxmin: true,
+        title: '新增秘钥库',
+        content: $("#keystore-add"),
+        success: function (index) {
+            // 对弹层中的表单进行初始化渲染
+            form.render();
+            // 表单提交事件
+            form.on('submit(add)', function (data) {
+                let field = data.field; // 获取表单字段值
+                post("/keystore", field);
+                layer.close(index);
+                return false; // 阻止默认 form 跳转
+            });
+        }
+    });
+
+
+}
 
 
 

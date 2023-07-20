@@ -1,7 +1,7 @@
 package cn.darkjrong.licmanager.service.impl;
 
+import cn.darkjrong.license.creator.service.KeyStoreService;
 import cn.darkjrong.licmanager.common.enums.ResponseEnum;
-import cn.darkjrong.licmanager.common.exceptions.LicenseWebException;
 import cn.darkjrong.licmanager.common.pojo.dto.KeystoreDTO;
 import cn.darkjrong.licmanager.common.pojo.dto.PageDTO;
 import cn.darkjrong.licmanager.common.pojo.entity.Keystore;
@@ -12,14 +12,14 @@ import cn.darkjrong.licmanager.service.KeystoreService;
 import cn.darkjrong.licmanager.service.base.impl.BaseServiceImpl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ObjectUtil;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.List;
@@ -38,6 +38,9 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
 
     @Autowired
     private KeystoreMapper keystoreMapper;
+
+    @Autowired
+    private KeyStoreService keyStoreService;
 
     @Override
     public List<Keystore> queryList(PageDTO pageDTO) {
@@ -64,8 +67,9 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         copyOptions.setIgnoreError(Boolean.TRUE);
 
         BeanUtil.copyProperties(keystoreDTO, keystore, copyOptions);
-        keystore.setPrivateKey(getBytes(keystoreDTO.getPrivateKey()));
-        keystore.setPublicKey(getBytes(keystoreDTO.getPublicKey()));
+        Key genKey = genKey(keystoreDTO.getValidity(), keystore.getPassword());
+        keystore.setPrivateKey(genKey.privateKey);
+        keystore.setPublicKey(genKey.publicKey);
         keystore.setCreatedTime(DateUtil.current());
         this.saveOrUpdate(keystore);
     }
@@ -81,24 +85,25 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         copyOptions.setIgnoreError(Boolean.TRUE);
 
         BeanUtil.copyProperties(keystoreDTO, keystore, copyOptions);
-        keystore.setPrivateKey(getBytes(keystoreDTO.getPrivateKey()));
-        keystore.setPublicKey(getBytes(keystoreDTO.getPublicKey()));
+        Key genKey = genKey(keystoreDTO.getValidity(), keystore.getPassword());
+        keystore.setPrivateKey(genKey.privateKey);
+        keystore.setPublicKey(genKey.publicKey);
         keystore.setUpdatedTime(DateUtil.current());
         this.saveOrUpdate(keystore);
     }
 
-    private byte[] getBytes(MultipartFile file) {
-        Assert.isFalse(ObjectUtil.isNull(file) || file.isEmpty(),
-                ResponseEnum.FILE_DOES_NOT_EXIST.getMessage());
-        try {
-            return file.getBytes();
-        }catch (Exception e) {
-            log.error("getBytes {}", e.getMessage());
-            throw new LicenseWebException(ResponseEnum.FILE_UPLOAD_EXCEPTION_RETRY);
-        }
+    private Key genKey(Integer validity, String password) {
+        return Key.builder()
+                .privateKey(keyStoreService.genPrivateKeys(Convert.toLong(validity), password))
+                .publicKey(keyStoreService.genPublicCerts(Convert.toLong(validity), password))
+                .build();
     }
 
-
+    @Builder
+    private static class Key {
+        public byte[] privateKey;
+        public byte[] publicKey;
+    }
 
 
 }
