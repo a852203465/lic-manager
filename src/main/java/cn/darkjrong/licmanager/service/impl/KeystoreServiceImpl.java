@@ -92,6 +92,13 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         this.saveOrUpdate(keystore);
     }
 
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void deleteKeystore(List<Long> ids) {
+        Assert.notEmpty(ids, ResponseEnum.THE_ID_CANNOT_BE_EMPTY.getMessage());
+        ids.forEach(this::delete);
+    }
+
     private Key genKey(Integer validity, String password) {
         return Key.builder()
                 .privateKey(keyStoreService.genPrivateKeys(Convert.toLong(validity), password))

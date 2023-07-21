@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * <p>
@@ -70,7 +71,13 @@ public class KeystoreController {
         return ResponseVO.success();
     }
 
-
+    @ApiOperation("批量删除秘钥库")
+    @DeleteMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseVO<Void> deleteKeystoreList(@RequestBody @Validated List<Long> ids) {
+        log.info("deleteKeystoreList {}", ids);
+        keystoreService.deleteKeystore(ids);
+        return ResponseVO.success();
+    }
 
 
 

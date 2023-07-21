@@ -1,23 +1,26 @@
-layui.use('laydate', function () {
-    var laydate = layui.laydate;
-
-    //执行一个laydate实例
-    laydate.render({
-        type: 'datetime',
-        elem: '#start' //指定元素
-    });
-
-    //执行一个laydate实例
-    laydate.render({
-        type: 'datetime',
-        elem: '#end' //指定元素
-    });
-});
-
 $(function () {
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            type: 'datetime',
+            elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            type: 'datetime',
+            elem: '#end' //指定元素
+        });
+    });
     search();
 })
 
+/**
+ * 创建表格
+ * @param records 记录
+ */
 function createTable(records) {
     layui.use('table', function () {
         var table = layui.table;
@@ -28,9 +31,7 @@ function createTable(records) {
             //标题栏
             cols: [[
                 {
-                    fixed: 'left', type: 'checkbox', toolbar: '<td> ' +
-                        '<div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div> ' +
-                        '</td>'
+                    fixed: 'left', type: 'checkbox', toolbar: '<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id={id}><i class="layui-icon" onclick="delAll()">&#xe605;</i></div> '
                 },
                 {field: 'name', title: '名称'},
                 {field: 'validity', title: '有效期(单位:年)'},
@@ -42,15 +43,16 @@ function createTable(records) {
                         return ts2Time(row.createdTime)
                     }
                 },
+                {field: 'description', title: '描述'},
                 {
-                    fixed: 'right', width: 100, title: '操作', toolbar: '<td class="td-manage">\n' +
-                        '              <a title="编辑"  onclick="operationKeystore(\'编辑\')" href="javascript:;">\n' +
+                    fixed: 'right', width: 100, title: '操作', toolbar: '<div class="td-manage">\n' +
+                        '              <a title="编辑" lay-event="update" href="javascript:;">\n' +
                         '                <i class="layui-icon">&#xe642;</i>\n' +
                         '              </a>\n' +
-                        '              <a title="删除" onclick="member_del(this)" href="javascript:;">\n' +
+                        '              <a title="删除" lay-event="delete" href="javascript:;">\n' +
                         '                <i class="layui-icon">&#xe640;</i>\n' +
                         '              </a>\n' +
-                        '            </td>'
+                        '            </div>'
                 }
             ]],
             data: records,
@@ -59,27 +61,47 @@ function createTable(records) {
             page: false, // 是否显示分页
         });
 
-        // 增加点击事件
-        // table.on('row(table-data)', function (obj) {
-        //     console.log(obj.data);
-        // })
+        table.on('tool(table-data)', function (obj) {
+            let data = obj.data;
+            let layEvent = obj.event;
+            if ("update" === layEvent) {
+                update(data);
+            }else if ("delete" === layEvent) {
+                deleteData(data);
+            }else if ("delAll" === layEvent) {
+                delAll(data)
+            }
+        });
     });
 }
 
+/**
+ * 查询数据
+ */
 function search() {
     let page = pageSearch(1, 50);
     createTable(page.records);
     loadPage(page.total);
 }
 
-function member_del(obj){
+/**
+ * 删除
+ * @param obj 数据
+ */
+function deleteData(obj){
     layer.confirm('确认要删除吗？',function(index){
-        //发异步删除数据
-        $(obj).parents("tr").remove();
-        layer.msg('已删除!',{icon:1,time:1000});
+        delPath("/keystore", obj.id);
+        layer.close(index);
+        search();
     });
 }
 
+/**
+ * 分页查询
+ * @param currentPage 当前页
+ * @param pageSize 页大小
+ * @returns {*} 分页数据
+ */
 function pageSearch(currentPage, pageSize) {
     let start = $("#start").val();
     let end = $("#end").val();
@@ -101,17 +123,29 @@ function pageSearch(currentPage, pageSize) {
     return get("/keystore", pageDTO);
 }
 
-function delAll(argument) {
+/**
+ * 删除所有
+ */
+function delAll() {
+    var datas = layui.table.checkStatus('table-data').data;
+    if (isNotNull(datas)) {
+        let ids = [];
+        datas.forEach(a => {
+            ids.push(a.id);
+        })
+        layer.confirm('确认要删除吗？', function (index) {
+            delBody("/keystore/batch", ids);
+            layer.close(index);
+            search();
+        });
+    }
 
-    var data = tableCheck.getData();
-
-    layer.confirm('确认要删除吗？' + data, function (index) {
-        //捉到所有被选中的，发异步进行删除
-        layer.msg('删除成功', {icon: 1});
-        $(".layui-form-checked").not('.header').parents('tr').remove();
-    });
 }
 
+/**
+ * 加载分页数据
+ * @param total 总数
+ */
 function loadPage(total) {
     layui.use(function () {
         var laypage = layui.laypage;
@@ -133,10 +167,11 @@ function loadPage(total) {
 
 }
 
-function operationKeystore(option) {
-    console.log(option);
+/**
+ * 新增
+ */
+function add() {
     var form = layui.form;
-
     layer.open({
         type: 1,
         area: [($(window).width()*0.4)+'px', ($(window).height() - 450) +'px'],
@@ -144,25 +179,58 @@ function operationKeystore(option) {
         shadeClose: true,
         shade: 0.4,
         maxmin: true,
-        title: option + '秘钥库',
-        content: $('#keystore-option'),
+        title: '新增秘钥库',
+        content: $('#add-form'),
         success: function (index) {
             // 对弹层中的表单进行初始化渲染
             form.render();
             // 表单提交事件
             form.on('submit(add)', function (data) {
-                let field = data.field; // 获取表单字段值
+                console.log(data);
+                let field = data.field;
                 post("/keystore", field);
                 layer.close(index);
-                return false; // 阻止默认 form 跳转
+            });
+        }
+    });
+}
+
+/**
+ * 修改
+ */
+function update(data) {
+    let form = layui.form;
+    layer.open({
+        type: 1,
+        area: [($(window).width()*0.4)+'px', ($(window).height() - 450) +'px'],
+        fix: false, //不固定
+        shadeClose: true,
+        shade: 0.4,
+        maxmin: true,
+        title: '修改秘钥库',
+        content: $('#update-form'),
+        success: function () {
+            form.val("layui-update-form", {
+                "name": data.name,
+                "validity": data.validity,
+                "password": data.password,
+                "createdUser": data.createdUser,
+                "createdTime": data.createdTime,
+                "description": data.description,
             });
         }
     });
 
+    form.on('submit(update)', function (new_obj) {
+        let field = new_obj.field;
+        field.id = data.id;
+        put("/keystore", field);
+        layer.closeAll();
+    });
+
+
 
 }
-
-
 
 
 

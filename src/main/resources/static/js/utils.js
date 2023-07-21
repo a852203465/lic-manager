@@ -1,5 +1,5 @@
 function ts2Time(timestamp) {
-    if (typeof timestamp == "undefined" || timestamp == null || timestamp == "") {
+    if (isNull(timestamp)) {
         return '';
     }
     if (typeof timestamp === 'string') {
@@ -17,6 +17,20 @@ function ts2Time(timestamp) {
     let s = date.getSeconds();
     return Y + M + D + h + m + s;
 }
+
+function isNull(obj) {
+    return typeof obj == "undefined" || obj == null || obj === "";
+}
+
+function isNotNull(obj) {
+    return !isNull(obj);
+}
+
+
+
+
+
+
 
 
 

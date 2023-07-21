@@ -5,6 +5,8 @@ import cn.darkjrong.licmanager.common.pojo.entity.Keystore;
 import cn.darkjrong.licmanager.common.pojo.vo.KeystoreVO;
 import cn.darkjrong.licmanager.service.base.BaseService;
 
+import java.util.List;
+
 /**
  * <p>
  * 秘钥库 服务类
@@ -28,6 +30,13 @@ public interface KeystoreService extends BaseService<Keystore, Keystore, Keystor
      * @param keystoreDTO 密钥存储库DTO
      */
     void updateKeystore(KeystoreDTO keystoreDTO);
+
+    /**
+     * 删除密钥库
+     *
+     * @param ids id
+     */
+    void deleteKeystore(List<Long> ids);
 
 
 }
