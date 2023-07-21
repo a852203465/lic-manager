@@ -57,6 +57,20 @@ function delPath(url, param) {
     return data;
 }
 
+function patchPath(url, param) {
+    let data;
+    $.ajax({
+        method: "PATCH",
+        url: url + "/" + param,
+        async: false,
+        contentType: 'application/json',
+        success: function(res) {
+            data = callback(res);
+        }
+    });
+    return data;
+}
+
 function delBody(url, body) {
     let data;
     $.ajax({

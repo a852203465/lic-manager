@@ -38,5 +38,22 @@ public interface KeystoreService extends BaseService<Keystore, Keystore, Keystor
      */
     void deleteKeystore(List<Long> ids);
 
+    /**
+     * 重新生成
+     *
+     * @param id id
+     */
+    void regenerate(Long id);
+
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -31,7 +31,9 @@ function createTable(records) {
             //标题栏
             cols: [[
                 {
-                    fixed: 'left', type: 'checkbox', toolbar: '<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id={id}><i class="layui-icon" onclick="delAll()">&#xe605;</i></div> '
+                    fixed: 'left',
+                    type: 'checkbox',
+                    toolbar: '<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id={id}><i class="layui-icon" onclick="delAll()">&#xe605;</i></div> '
                 },
                 {field: 'name', title: '名称'},
                 {field: 'validity', title: '有效期(单位:年)'},
@@ -48,6 +50,9 @@ function createTable(records) {
                     fixed: 'right', width: 100, title: '操作', toolbar: '<div class="td-manage">\n' +
                         '              <a title="编辑" lay-event="update" href="javascript:;">\n' +
                         '                <i class="layui-icon">&#xe642;</i>\n' +
+                        '              </a>\n' +
+                        '               <a title="刷新秘钥" lay-event="regenerate" href="javascript:;">\n' +
+                        '                <i class="layui-icon">&#xe669;</i>\n' +
                         '              </a>\n' +
                         '              <a title="删除" lay-event="delete" href="javascript:;">\n' +
                         '                <i class="layui-icon">&#xe640;</i>\n' +
@@ -66,12 +71,24 @@ function createTable(records) {
             let layEvent = obj.event;
             if ("update" === layEvent) {
                 update(data);
-            }else if ("delete" === layEvent) {
+            } else if ("delete" === layEvent) {
                 deleteData(data);
-            }else if ("delAll" === layEvent) {
-                delAll(data)
+            } else if ("regenerate" === layEvent) {
+                regenerate(data)
             }
         });
+    });
+}
+
+/**
+ * 重新生成秘钥
+ * @param data
+ */
+function regenerate(data) {
+    layer.confirm('确认重新生成秘钥吗？', function (index) {
+        patchPath("/keystore", data.id);
+        layer.close(index);
+        search();
     });
 }
 
@@ -88,8 +105,8 @@ function search() {
  * 删除
  * @param obj 数据
  */
-function deleteData(obj){
-    layer.confirm('确认要删除吗？',function(index){
+function deleteData(obj) {
+    layer.confirm('确认要删除吗？', function (index) {
         delPath("/keystore", obj.id);
         layer.close(index);
         search();
@@ -128,7 +145,7 @@ function pageSearch(currentPage, pageSize) {
  */
 function delAll() {
     var datas = layui.table.checkStatus('table-data').data;
-    if (isNotNull(datas)) {
+    if (!_.isNil(datas) && !_.isEmpty(datas)) {
         let ids = [];
         datas.forEach(a => {
             ids.push(a.id);
@@ -174,7 +191,7 @@ function add() {
     var form = layui.form;
     layer.open({
         type: 1,
-        area: [($(window).width()*0.4)+'px', ($(window).height() - 450) +'px'],
+        area: [($(window).width() * 0.4) + 'px', ($(window).height() - 450) + 'px'],
         fix: false, //不固定
         shadeClose: true,
         shade: 0.4,
@@ -202,7 +219,7 @@ function update(data) {
     let form = layui.form;
     layer.open({
         type: 1,
-        area: [($(window).width()*0.4)+'px', ($(window).height() - 450) +'px'],
+        area: [($(window).width() * 0.4) + 'px', ($(window).height() - 450) + 'px'],
         fix: false, //不固定
         shadeClose: true,
         shade: 0.4,
@@ -227,7 +244,6 @@ function update(data) {
         put("/keystore", field);
         layer.closeAll();
     });
-
 
 
 }

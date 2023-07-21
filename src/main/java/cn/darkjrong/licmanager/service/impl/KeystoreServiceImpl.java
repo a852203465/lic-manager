@@ -1,5 +1,6 @@
 package cn.darkjrong.licmanager.service.impl;
 
+import cn.darkjrong.license.creator.domain.SecretKey;
 import cn.darkjrong.license.creator.service.KeyStoreService;
 import cn.darkjrong.licmanager.common.enums.ResponseEnum;
 import cn.darkjrong.licmanager.common.pojo.dto.KeystoreDTO;
@@ -15,7 +16,6 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,9 +67,9 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         copyOptions.setIgnoreError(Boolean.TRUE);
 
         BeanUtil.copyProperties(keystoreDTO, keystore, copyOptions);
-        Key genKey = genKey(keystoreDTO.getValidity(), keystore.getPassword());
-        keystore.setPrivateKey(genKey.privateKey);
-        keystore.setPublicKey(genKey.publicKey);
+        SecretKey secretKey = keyStoreService.genSecretKey(Convert.toLong(keystoreDTO.getValidity()), keystore.getPassword());
+        keystore.setPrivateKey(secretKey.getPrivateKey());
+        keystore.setPublicKey(secretKey.getPublicKey());
         keystore.setCreatedTime(DateUtil.current());
         this.saveOrUpdate(keystore);
     }
@@ -85,9 +85,6 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         copyOptions.setIgnoreError(Boolean.TRUE);
 
         BeanUtil.copyProperties(keystoreDTO, keystore, copyOptions);
-        Key genKey = genKey(keystoreDTO.getValidity(), keystore.getPassword());
-        keystore.setPrivateKey(genKey.privateKey);
-        keystore.setPublicKey(genKey.publicKey);
         keystore.setUpdatedTime(DateUtil.current());
         this.saveOrUpdate(keystore);
     }
@@ -99,17 +96,17 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         ids.forEach(this::delete);
     }
 
-    private Key genKey(Integer validity, String password) {
-        return Key.builder()
-                .privateKey(keyStoreService.genPrivateKeys(Convert.toLong(validity), password))
-                .publicKey(keyStoreService.genPublicCerts(Convert.toLong(validity), password))
-                .build();
-    }
-
-    @Builder
-    private static class Key {
-        public byte[] privateKey;
-        public byte[] publicKey;
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void regenerate(Long id) {
+        Assert.notNull(id, ResponseEnum.THE_ID_CANNOT_BE_EMPTY.getMessage());
+        Keystore keystore = this.getById(id);
+        Assert.notNull(keystore, ResponseEnum.THE_KEY_LIBRARY_DOES_NOT_EXIST.getMessage());
+        SecretKey secretKey = keyStoreService.genSecretKey(Convert.toLong(keystore.getValidity()), keystore.getPassword());
+        keystore.setPrivateKey(secretKey.getPrivateKey());
+        keystore.setPublicKey(secretKey.getPublicKey());
+        keystore.setUpdatedTime(DateUtil.current());
+        this.updateById(keystore);
     }
 
 

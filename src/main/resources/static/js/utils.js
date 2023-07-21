@@ -1,5 +1,5 @@
 function ts2Time(timestamp) {
-    if (isNull(timestamp)) {
+    if (_.isNil(timestamp) || _.isEqual(timestamp, '')) {
         return '';
     }
     if (typeof timestamp === 'string') {
@@ -18,13 +18,7 @@ function ts2Time(timestamp) {
     return Y + M + D + h + m + s;
 }
 
-function isNull(obj) {
-    return typeof obj == "undefined" || obj == null || obj === "";
-}
 
-function isNotNull(obj) {
-    return !isNull(obj);
-}
 
 
 

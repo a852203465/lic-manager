@@ -79,6 +79,15 @@ public class KeystoreController {
         return ResponseVO.success();
     }
 
-
+    @ApiOperation("重新生成秘钥")
+    @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "id", dataTypeClass = Long.class, value = "主键ID", required = true),
+    })
+    public ResponseVO<Void> regenerate(@PathVariable("id") @NotNull(message = "主键ID 不能为空") Long id) {
+        log.info("regenerate {}", id);
+        keystoreService.regenerate(id);
+        return ResponseVO.success();
+    }
 
 }
