@@ -1,15 +1,15 @@
 $(function () {
     layui.use('laydate', function () {
-        var laydate = layui.laydate;
+        let layDate = layui.laydate;
 
-        //执行一个laydate实例
-        laydate.render({
+        //执行一个layDate实例
+        layDate.render({
             type: 'datetime',
             elem: '#start' //指定元素
         });
 
-        //执行一个laydate实例
-        laydate.render({
+        //执行一个layDate实例
+        layDate.render({
             type: 'datetime',
             elem: '#end' //指定元素
         });
@@ -123,10 +123,10 @@ function pageSearch(currentPage, pageSize) {
     let start = $("#start").val();
     let end = $("#end").val();
     let name = $("#name").val();
-    if (typeof start != "undefined" && start != null && start !== "") {
+    if (!_.isNil(start) && !_.isEmpty(start)) {
         start = new Date(start).getTime();
     }
-    if (typeof end != "undefined" && end != null && end !== "") {
+    if (!_.isNil(end)&& !_.isEmpty(end)) {
         end = new Date(end).getTime();
     }
 
@@ -156,7 +156,6 @@ function delAll() {
             search();
         });
     }
-
 }
 
 /**
@@ -201,12 +200,17 @@ function add() {
         success: function (index) {
             // 对弹层中的表单进行初始化渲染
             form.render();
+
+            // validate(form);
+
             // 表单提交事件
             form.on('submit(add)', function (data) {
-                console.log(data);
                 let field = data.field;
+                // post("/keystore", field, function (res) {
+                //     isSuccess(index, res);
+                // });
+
                 post("/keystore", field);
-                layer.close(index);
             });
         }
     });
@@ -238,18 +242,36 @@ function update(data) {
         }
     });
 
+    validate(form);
     form.on('submit(update)', function (new_obj) {
         let field = new_obj.field;
         field.id = data.id;
         put("/keystore", field);
         layer.closeAll();
     });
-
-
 }
 
-
-
+/**
+ * 校验字段
+ * @param form 表单对象
+ */
+function validate(form) {
+// 自定义验证规则，如下以验证用户名和密码为例
+    form.verify({
+        // 函数写法
+        // 参数 value 为表单的值；参数 item 为表单的 DOM 对象
+        name: function (value, item) {
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                return '名称不能有特殊字符';
+            }
+            if (/(^_)|(__)|(_+$)/.test(value)) return '名称首尾不能出现 _ 下划线';
+            if (/^\d+$/.test(value)) return '名称不能全为数字';
+        },
+        // 数组中两个成员值分别代表：[正则表达式、正则匹配不符时的提示文字]
+        password: [/(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/, '密码必须由字母和数字组成的至少6个字符组成'],
+        validity: [/^\d+$/, '有效期只能是数字且是整数']
+    });
+}
 
 
 

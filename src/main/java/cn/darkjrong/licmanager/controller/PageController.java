@@ -29,9 +29,9 @@ public class PageController {
         return "login";
     }
 
-    @RequestMapping("keyStore")
-    public String keyStore() {
-        return "keyStore";
+    @RequestMapping("page-keystore")
+    public String keystore() {
+        return "keystore";
     }
 
 

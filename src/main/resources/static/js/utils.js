@@ -18,6 +18,30 @@ function ts2Time(timestamp) {
     return Y + M + D + h + m + s;
 }
 
+function isSuccess(index, res) {
+    if (res.code !== 0) {
+        layer.msg(res.message);
+        return false;
+    }
+    layer.close(index);
+    return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

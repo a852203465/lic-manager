@@ -563,3 +563,12 @@ table th, table td {
     }
 }
 
+#layui-layer-shade1 {
+    z-index: 999 !important;
+}
+
+
+
+
+
+
