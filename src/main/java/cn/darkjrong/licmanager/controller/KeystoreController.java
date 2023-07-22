@@ -16,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -89,5 +91,23 @@ public class KeystoreController {
         keystoreService.regenerate(id);
         return ResponseVO.success();
     }
+
+    @ApiOperation("下载秘钥库")
+    @GetMapping(value = "/{id}/{flag}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "id", dataTypeClass = Long.class, value = "主键ID", required = true),
+            @ApiImplicitParam(paramType = "path", name = "flag", dataTypeClass = Boolean.class, value = "标识, true:私钥,false:公钥", required = true),
+    })
+    public void downloadPublic(@PathVariable("id") @NotNull(message = "主键ID 不能为空") Long id,
+                               @PathVariable("flag") @NotNull(message = "标识 不能为空") Boolean flag,
+                               HttpServletRequest request, HttpServletResponse response) {
+        log.info("downloadPublic {}, {}", id, flag);
+        keystoreService.downloadPublic(id, flag, request, response);
+    }
+
+
+
+
+
 
 }

@@ -1,6 +1,8 @@
 package cn.darkjrong.licmanager.service.impl;
 
+import cn.darkjrong.license.core.common.utils.KeyStoreUtils;
 import cn.darkjrong.license.creator.domain.SecretKey;
+import cn.darkjrong.license.creator.service.FileService;
 import cn.darkjrong.license.creator.service.KeyStoreService;
 import cn.darkjrong.licmanager.common.enums.ResponseEnum;
 import cn.darkjrong.licmanager.common.pojo.dto.KeystoreDTO;
@@ -21,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 
@@ -41,6 +45,9 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
 
     @Autowired
     private KeyStoreService keyStoreService;
+
+    @Autowired
+    private FileService fileService;
 
     @Override
     public List<Keystore> queryList(PageDTO pageDTO) {
@@ -107,6 +114,18 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         keystore.setPublicKey(secretKey.getPublicKey());
         keystore.setUpdatedTime(DateUtil.current());
         this.updateById(keystore);
+    }
+
+    @Override
+    public void downloadPublic(Long id, Boolean flag, HttpServletRequest request, HttpServletResponse response) {
+        Assert.notNull(id, ResponseEnum.THE_ID_CANNOT_BE_EMPTY.getMessage());
+        Keystore keystore = this.getById(id);
+        Assert.notNull(keystore, ResponseEnum.THE_KEY_LIBRARY_DOES_NOT_EXIST.getMessage());
+        if (flag) {
+            fileService.download(keystore.getPrivateKey(), KeyStoreUtils.PRIVATE_KEYS, request, response);
+        }else {
+            fileService.download(keystore.getPublicKey(), KeyStoreUtils.PUBLIC_CERTS, request, response);
+        }
     }
 
 

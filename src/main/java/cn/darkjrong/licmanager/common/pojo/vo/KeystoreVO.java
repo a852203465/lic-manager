@@ -38,7 +38,7 @@ public class KeystoreVO extends Base implements Serializable {
     /**
      * 私钥
      */
-    private byte[] privateKey;
+//    private byte[] privateKey;
 
     /**
      * 公钥

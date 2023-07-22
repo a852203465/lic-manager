@@ -179,45 +179,45 @@ xblock{
     border-color: #15c142!important;
 }
 
-/*.page{*/
-/*    margin-top: 20px;*/
-/*    text-align: center;*/
+.page{
+    margin-top: 20px;
+    text-align: center;
 
-/*}*/
-/*.page a{*/
-/*    display: inline-block;*/
-/*    background: #f5f5f5;*/
-/*    color: #888;*/
-/*    padding: 10px 13px;*/
-/*    min-width: 15px;*/
-/*	transition:background-color ease .5s;*/
-/*	font-family:"microsoft yahei";*/
-/*	border-radius:3px;*/
+}
+.page a{
+    display: inline-block;
+    background: #f5f5f5;
+    color: #888;
+    padding: 10px 13px;
+    min-width: 15px;
+	transition:background-color ease .5s;
+	font-family:"microsoft yahei";
+	border-radius:3px;
 
-/*}*/
-/*.page span{*/
-/*    display: inline-block;*/
-/*    padding: 10px 10px;*/
-/*    min-width: 15px;*/
-/*}*/
-/*.page span.current{*/
-/*    display: inline-block;*/
-/*    background: #15c142 url() 0 0 no-repeat;*/
-/*    color: #fff;*/
-/*     padding: 10px 13px;*/
-/*    min-width: 15px;*/
-/*	border-radius:3px;*/
-/*}*/
-/*.page .pagination li{*/
-/*    display: inline-block;*/
-/*    margin-right: 5px;*/
-/*    text-align: center;*/
-/*}*/
-/*.page .pagination li.active span{*/
-/*    background: #15c142 url() 0 0 no-repeat;*/
-/*    color: #fff;*/
+}
+.page span{
+    display: inline-block;
+    padding: 10px 10px;
+    min-width: 15px;
+}
+.page span.current{
+    display: inline-block;
+    background: #15c142 url() 0 0 no-repeat;
+    color: #fff;
+     padding: 10px 13px;
+    min-width: 15px;
+	border-radius:3px;
+}
+.page .pagination li{
+    display: inline-block;
+    margin-right: 5px;
+    text-align: center;
+}
+.page .pagination li.active span{
+    background: #15c142 url() 0 0 no-repeat;
+    color: #fff;
 
-/*}*/
+}
 
 /*登录样式*/
 /*头部*/
@@ -563,12 +563,28 @@ table th, table td {
     }
 }
 
+#layui-layer1 {
+    z-index: 902 !important;
+}
 #layui-layer-shade1 {
-    z-index: 999 !important;
+    z-index: 900 !important;
 }
 
+.layui-layer .layui-layer-page {
+    z-index: 900 !important;
+}
 
+.layui-form-item .layui-input-inline {
+    width: 75% !important;
+}
 
+.layui-textarea {
+    width: 95% !important;
+}
+
+.layui-layer-content .layui-layer-wrap {
+    margin-top: 5px !important;
+}
 
 
 

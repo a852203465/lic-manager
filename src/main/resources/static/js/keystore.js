@@ -38,6 +38,19 @@ function createTable(records) {
                 {field: 'name', title: '名称'},
                 {field: 'validity', title: '有效期(单位:年)'},
                 {field: 'password', title: '密码'},
+                /*{title: '私钥', toolbar: '<div class="td-manage">\n' +
+                        '              <a title="下载私钥" lay-event="privateEvent" href="javascript:;">\n' +
+                        '                <i class="layui-icon layui-icon-download-circle"></i>\n' +
+                        '              </a>\n' +
+                        '            </div>'
+
+                },*/
+                {title: '公钥', toolbar: '<div class="td-manage">\n' +
+                        '              <a title="下载公钥" lay-event="publicEvent" href="javascript:;">\n' +
+                        '                <i class="layui-icon layui-icon-download-circle"></i>\n' +
+                        '              </a>\n' +
+                        '            </div>'
+                },
                 {field: 'createdUser', title: '添加人'},
                 {
                     field: 'createdTime', title: '添加时间', sort: true,
@@ -75,9 +88,22 @@ function createTable(records) {
                 deleteData(data);
             } else if ("regenerate" === layEvent) {
                 regenerate(data)
+            }else if ("privateEvent" === layEvent) {
+                downloadKey(data, true);
+            }else if ("publicEvent" === layEvent) {
+                downloadKey(data, false);
             }
         });
     });
+}
+
+/**
+ * 下载秘钥
+ * @param data
+ * @param flag
+ */
+function downloadKey(data, flag) {
+    window.location.href="/keystore/" + data.id + "/" + flag;
 }
 
 /**
@@ -190,7 +216,7 @@ function add() {
     var form = layui.form;
     layer.open({
         type: 1,
-        area: [($(window).width() * 0.4) + 'px', ($(window).height() - 450) + 'px'],
+        area: [($(window).width() * 0.7) + 'px', ($(window).height() - 200) + 'px'],
         fix: false, //不固定
         shadeClose: true,
         shade: 0.4,
@@ -201,16 +227,17 @@ function add() {
             // 对弹层中的表单进行初始化渲染
             form.render();
 
-            // validate(form);
+            validate(form);
 
             // 表单提交事件
             form.on('submit(add)', function (data) {
                 let field = data.field;
-                // post("/keystore", field, function (res) {
-                //     isSuccess(index, res);
-                // });
-
-                post("/keystore", field);
+                let res = post("/keystore", field);
+                if (!isSuccess(res.code)) {
+                    error(res.message);
+                    return false;
+                }
+                return true;
             });
         }
     });
@@ -223,7 +250,7 @@ function update(data) {
     let form = layui.form;
     layer.open({
         type: 1,
-        area: [($(window).width() * 0.4) + 'px', ($(window).height() - 450) + 'px'],
+        area: [($(window).width() * 0.7) + 'px', ($(window).height() - 200) + 'px'],
         fix: false, //不固定
         shadeClose: true,
         shade: 0.4,
