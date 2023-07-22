@@ -7,6 +7,7 @@ import cn.darkjrong.licmanager.common.pojo.vo.PageVO;
 import cn.darkjrong.licmanager.common.pojo.vo.ResponseVO;
 import cn.darkjrong.licmanager.service.KeystoreService;
 import cn.hutool.extra.validation.ValidationUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,7 @@ import java.util.List;
 @Slf4j
 @Validated
 @RestController
+@Api(tags = "秘钥库管理")
 @RequestMapping("/keystore")
 public class KeystoreController {
 

@@ -14,11 +14,16 @@
         <script src="plugins/jquery-3.7.0.min.js"></script>
         <script src="plugins/layui-v2.8.11/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="js/xadmin.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/welcome.js"></script>
+
     </head>
     <body>
     <div class="x-body layui-anim layui-anim-up">
         <blockquote class="layui-elem-quote">欢迎管理员：
-            <span class="x-red">admin</span>！当前时间:2018-04-25 20:50:53</blockquote>
+            <span class="x-red">admin</span>！当前时间:
+            <span class="x-black" id="sysDate"></span>
+        </blockquote>
         <fieldset class="layui-elem-field">
             <legend>数据统计</legend>
             <div class="layui-field-box">
@@ -85,12 +90,12 @@
                     <tbody>
                         <tr>
                             <td >
-                                <a class="x-a" href="/" target="_blank">新版L-admin 2.0上线了</a>
+                                <a class="x-a" href="/" target="_blank">license管理端上线了</a>
                             </td>
                         </tr>
                         <tr>
                             <td >
-                                <a class="x-a" href="/" target="_blank">交流qq:(370946531)</a>
+                                <a class="x-a" href="/" target="_blank">交流qq:(852203465)</a>
                             </td>
                         </tr>
                     </tbody>
@@ -103,8 +108,8 @@
                 <table class="layui-table">
                     <tbody>
                         <tr>
-                            <th>xxx版本</th>
-                            <td>1.0.180420</td></tr>
+                            <th>系统版本</th>
+                            <td>1.0</td></tr>
                         <tr>
                             <th>服务器地址</th>
                             <td>#</td></tr>
@@ -146,17 +151,15 @@
                     <tbody>
                         <tr>
                             <th>版权所有</th>
-                            <td>cdnuti(xuebingsi)
-                                <a href="http://#/" class='x-a' target="_blank">访问官网</a></td>
+                            <td><a href="http://#/" class='x-a' target="_blank">访问官网</a></td>
                         </tr>
                         <tr>
                             <th>开发者</th>
-                            <td>along(370946531@qq.com)</td></tr>
+                            <td>852203465@qq.com</td></tr>
                     </tbody>
                 </table>
             </div>
         </fieldset>
-        <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由L-admin提供技术支持。</blockquote>
     </div>
    
     </body>

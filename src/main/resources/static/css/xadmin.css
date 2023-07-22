@@ -149,7 +149,7 @@ xblock{
     margin-bottom: 20px;
 }
 .x-so input.layui-input{
-    width: 150px;
+    width: 200px;
 }
 .x-so .layui-form-label{
     display: inline-block;
@@ -159,6 +159,9 @@ xblock{
 }
 .x-red{
     color: red;
+}
+.x-black{
+    color: black;
 }
 .x-a{
     color: #099641;

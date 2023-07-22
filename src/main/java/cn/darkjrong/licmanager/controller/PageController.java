@@ -1,5 +1,6 @@
 package cn.darkjrong.licmanager.controller;
 
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date 2023/07/18
  */
 @Slf4j
+@Api(hidden = true)
 @Controller
 public class PageController {
 
@@ -34,6 +36,10 @@ public class PageController {
         return "keystore";
     }
 
+    @RequestMapping("page-project")
+    public String project() {
+        return "project";
+    }
 
 
 }

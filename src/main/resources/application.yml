@@ -71,7 +71,24 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 
-
+knife4j:
+  enable: true
+  openapi:
+    title: license管理端
+    description: "license管理端接口文档"
+    email: 852203465@qq.com
+    concat: 贾荣
+    url: https://docs.xiaominfo.com
+    version: v1.0
+    license: Apache License, Version 2.0
+    license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+    terms-of-service-url: https://www.apache.org/licenses/LICENSE-2.0.html
+    group:
+      default:
+        group-name: default
+        api-rule: package
+        api-rule-resources:
+          - cn.darkjrong.licmanager.controller
 
 
 

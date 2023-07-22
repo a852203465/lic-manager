@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.darkjrong.licmanager.mapper.LicenseMapper">
+    <resultMap id="BaseResultMap" type="cn.darkjrong.licmanager.common.pojo.entity.License">
+        <id column="id" property="id"/>
+        <result column="project_id" property="projectId"/>
+        <result column="name" property="name"/>
+        <result column="subject" property="subject"/>
+        <result column="private_alias" property="privateAlias"/>
+        <result column="app_code" property="appCode"/>
+        <result column="lic" property="lic"/>
+        <result column="gen_time" property="genTime"/>
+        <result column="expired_time" property="expiredTime"/>
+        <result column="consumer_amount" property="consumerAmount"/>
+        <result column="created_user" property="createdUser"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_user" property="updatedUser"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="description" property="description"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        project_id,
+        `name`,
+        subject,
+        private_alias,
+        app_code,
+        lic,
+        gen_time,
+        expired_time,
+        consumer_amount,
+        created_user,
+        created_time,
+        updated_user,
+        updated_time,
+        description
+    </sql>
+
+    <select id="findLicenseByName" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from license
+        where name = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findLicense" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from license
+        <where>
+            <if test="projectId != null">
+                and project_id = #{projectId,jdbcType=BIGINT}
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="subject != null and subject != ''">
+                and subject like concat('%', #{subject,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="startTime != null and endTime != null">
+                and expired_time between #{startTime,jdbcType=BIGINT} and #{endTime,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+</mapper>

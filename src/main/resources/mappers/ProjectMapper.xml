@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.darkjrong.licmanager.mapper.ProjectMapper">
+    <resultMap id="BaseResultMap" type="cn.darkjrong.licmanager.common.pojo.entity.Project">
+        <id column="id" property="id"/>
+        <result column="keystore_id" property="keystoreId"/>
+        <result column="name" property="name"/>
+        <result column="company" property="company"/>
+        <result column="contact" property="contact"/>
+        <result column="telephone" property="telephone"/>
+        <result column="created_user" property="createdUser"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_user" property="updatedUser"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="description" property="description"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        keystore_id,
+        `name`,
+        company,
+        contact,
+        telephone,
+        created_user,
+        created_time,
+        updated_user,
+        updated_time,
+        description
+    </sql>
+
+    <select id="findProjectByKeystoreIdAndName" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from project
+        where keystore_id = #{keystoreId,jdbcType=BIGINT}
+        and name = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findProject" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from project
+        <where>
+            <if test="keystoreId != null">
+                and keystore_id = #{keystoreId,jdbcType=BIGINT}
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="company != null and company != ''">
+                and company like concat('%', #{company,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="contact != null and contact != ''">
+                and contact like concat('%', #{contact,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="telephone != null and telephone != ''">
+                and telephone like concat('%', #{telephone,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="startTime != null and endTime != null">
+                and created_time between #{startTime,jdbcType=BIGINT} and #{endTime,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+
+    <select id="findProjectByKeystoreId" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from project
+        where keystore_id = #{keystoreId,jdbcType=BIGINT}
+    </select>
+</mapper>

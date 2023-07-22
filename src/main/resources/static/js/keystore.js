@@ -33,7 +33,7 @@ function createTable(records) {
                 {
                     fixed: 'left',
                     type: 'checkbox',
-                    toolbar: '<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id={id}><i class="layui-icon" onclick="delAll()">&#xe605;</i></div> '
+                    toolbar: '<div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon" onclick="delAll()">&#xe605;</i></div> '
                 },
                 {field: 'name', title: '名称'},
                 {field: 'validity', title: '有效期(单位:年)'},
@@ -273,8 +273,12 @@ function update(data) {
     form.on('submit(update)', function (new_obj) {
         let field = new_obj.field;
         field.id = data.id;
-        put("/keystore", field);
-        layer.closeAll();
+        let res = put("/keystore", field);
+        if (!isSuccess(res.code)) {
+            error(res.message);
+            return false;
+        }
+        return true;
     });
 }
 

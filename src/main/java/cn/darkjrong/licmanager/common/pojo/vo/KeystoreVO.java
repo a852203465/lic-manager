@@ -1,6 +1,8 @@
 package cn.darkjrong.licmanager.common.pojo.vo;
 
 import cn.darkjrong.licmanager.common.pojo.bo.Base;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +16,7 @@ import java.io.Serializable;
  * @author Rong.Jia
  * @since 2023-07-19
  */
+@ApiModel("秘钥库信息")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class KeystoreVO extends Base implements Serializable {
@@ -23,16 +26,19 @@ public class KeystoreVO extends Base implements Serializable {
     /**
      * 名称
      */
+    @ApiModelProperty("名称")
     private String name;
 
     /**
      * 私钥证书有效期(单位：年), 默认：1
      */
+    @ApiModelProperty("私钥证书有效期(单位：年), 默认：1")
     private Integer validity;
 
     /**
      * 私钥密码
      */
+    @ApiModelProperty("私钥密码")
     private String password;
 
     /**
@@ -43,6 +49,7 @@ public class KeystoreVO extends Base implements Serializable {
     /**
      * 公钥
      */
+    @ApiModelProperty("公钥")
     private byte[] publicKey;
 
 

@@ -1,0 +1,18 @@
+$(function () {
+    $('#sysDate').text(nowDate());
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

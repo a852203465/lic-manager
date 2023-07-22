@@ -72,7 +72,8 @@ public enum ResponseEnum {
 
     THE_KEY_LIBRARY_ALREADY_EXISTS(5000, "秘钥库已存在"),
     THE_KEY_LIBRARY_DOES_NOT_EXIST(5001, "秘钥库不存在,或已删除"),
-
+    THE_PROJECT_ALREADY_EXISTS(5002, "项目信息已存在"),
+    THE_PROJECT_DOES_NOT_EXIST(5003, "项目信息不存在,或已删除"),
 
 
 
