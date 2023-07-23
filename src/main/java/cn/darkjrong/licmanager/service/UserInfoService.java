@@ -62,7 +62,13 @@ public interface UserInfoService extends BaseService<UserInfo, UserInfo, UserInf
      */
     void disableUserInfo(String account);
 
-
+    /**
+     * 查询用户信息通过账户
+     *
+     * @param account 账户
+     * @return {@link UserInfoVO}
+     */
+    UserInfoVO findUserInfoByAccount(String account);
 
 
 

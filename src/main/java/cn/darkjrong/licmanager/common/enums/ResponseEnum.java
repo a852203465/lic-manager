@@ -24,15 +24,6 @@ public enum ResponseEnum {
     SYSTEM_ERROR(500, "系统错误"),
     FILE_LIMIT_EXCEEDED(-1, "文件超出限制, 请选择较小文件"),
 
-    ACCESS_TOKEN_INVALID(401, "access_token无效"),
-    REFRESH_TOKEN_INVALID(401, "refresh_token无效"),
-    UNAUTHORIZED(401, "无权访问(未授权)"),
-    AUTHORIZATION_EXPIRES(401, "授权过期, 请求重新登录"),
-    NOT_LOGGED_IN(401, "未登录，或者授权过期"),
-    ANONYMOUS_SUBJECT_UNAUTHORIZED(401, "无权访问:当前用户是匿名用户，请先登录"),
-    AUTHENTICATION_FAILED(401, "身份验证未通过"),
-    MISSING_TOKEN_AUTHENTICATION_FAILED(401, "缺失令牌,鉴权失败"),
-
     // 未找到
     NOT_FOUND(404, "请求接口不存在"),
 
@@ -56,19 +47,11 @@ public enum ResponseEnum {
     THE_END_TIME_CANNOT_BE_LESS_THAN_OR_EQUAL_TO_THE_CURRENT_TIME(1009, "结束时间不能小于等于当前时间"),
     THE_CODE_CANNOT_BE_EMPTY(1010, "CODE不能为空"),
     FILE_UPLOAD_EXCEPTION_RETRY(1012, "文件上传异常, 请重试"),
-    FILE_DOES_NOT_EXIST(1013, "文件不存在, 请检查"),
 
     SUBJECT_UNAUTHORIZED(4000, "无权访问:当前用户没有此请求所需权限"),
     USER_NAME_OR_PASSWORD_ERRORS_GREATER_THAN_5_TIMES(4001, "用户名或密码错误次数大于5次,账户已锁定, 请10分钟后再次访问"),
-    ACCOUNT_AUTHORIZATION_EXPIRED(4002, "账号授权过期"),
-    ACCOUNT_LOGIN_IS_PROHIBITED(4003, "账号禁止登陆"),
     THE_ACCOUNT_DOES_NOT_EXIST_PLEASE_CHANGE_THE_ACCOUNT_TO_LOGIN(4004, "账号不存在，请更换账号登录"),
-    PROHIBIT_THE_LOGIN(4005, "禁止登录"),
-    NO_PERMISSIONS(4006, "暂无权限， 请联系管理员"),
-    THE_ROLE_IDS_DOES_NOT_EXIST_PLEASE_CHANGE_THE_ACCOUNT_TO_LOGIN(4007, "角色不存在，请联系管理员分配角色"),
-    ACCOUNT_AUTOMATIC_LOGOUT(4008, "账号已自动退出登录，无需再次退出登录"),
     THE_ACCOUNT_OR_PASSWORD_IS_INCORRECT(4009, "账号或密码不正确"),
-    THE_ACCOUNT_IS_NOT_EXISTS(4010, "账号不存在"),
 
     THE_KEY_LIBRARY_ALREADY_EXISTS(5000, "秘钥库已存在"),
     THE_KEY_LIBRARY_DOES_NOT_EXIST(5001, "秘钥库不存在,或已删除"),

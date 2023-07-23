@@ -26,7 +26,7 @@ public class PageController {
         return "welcome";
     }
 
-    @RequestMapping("/")
+    @RequestMapping({"/", "/login"})
     public String login() {
         return "login";
     }

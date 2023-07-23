@@ -5,6 +5,7 @@ import cn.darkjrong.license.core.common.utils.FileUtils;
 import cn.darkjrong.license.creator.service.FileService;
 import cn.darkjrong.license.creator.service.LicenseCreatorService;
 import cn.darkjrong.licmanager.common.enums.ResponseEnum;
+import cn.darkjrong.licmanager.common.exceptions.LicenseWebException;
 import cn.darkjrong.licmanager.common.pojo.dto.GenLicenseDTO;
 import cn.darkjrong.licmanager.common.pojo.dto.LicenseDTO;
 import cn.darkjrong.licmanager.common.pojo.dto.PageDTO;
@@ -19,6 +20,7 @@ import cn.darkjrong.licmanager.service.ProjectService;
 import cn.darkjrong.licmanager.service.base.impl.BaseServiceImpl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
@@ -124,6 +126,10 @@ public class LicenseServiceImpl extends BaseServiceImpl<LicenseMapper, License, 
     public void genLicense(GenLicenseDTO genLicenseDTO) {
         License license = this.getById(genLicenseDTO.getId());
         Assert.notNull(license, ResponseEnum.THE_LICENSE_DOES_NOT_EXIST.getMessage());
+
+        if (DateUtil.compare(DateUtil.date(genLicenseDTO.getExpiredTime()), DateUtil.date(), DatePattern.NORM_DATE_PATTERN) <= 0) {
+            throw new LicenseWebException(ResponseEnum.THE_END_TIME_CANNOT_BE_LESS_THAN_OR_EQUAL_TO_THE_CURRENT_TIME);
+        }
 
         ProjectVO projectVO = projectService.queryById(license.getProjectId());
         byte[] privateKey = keystoreService.findPrivateKeyById(projectVO.getKeystore().getId());

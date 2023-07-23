@@ -34,7 +34,7 @@ import java.util.List;
 @Api(tags = "许可证管理")
 @RestController
 @RequestMapping("/license")
-public class LicenseController {
+public class LicenseController extends BaseController {
 
     @Autowired
     private LicenseService licenseService;
@@ -43,15 +43,17 @@ public class LicenseController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVO<Void> saveLicense(@Validated @RequestBody LicenseDTO licenseDTO) {
         log.info("saveLicense {}", licenseDTO.toString());
+        licenseDTO.setCreatedUser(getAccount());
         licenseService.saveLicense(licenseDTO);
         return ResponseVO.success();
     }
 
-    @ApiOperation("添加许可证")
+    @ApiOperation("修改许可证")
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVO<Void> updateLicense(@Validated @RequestBody LicenseDTO licenseDTO) {
         log.info("updateLicense {}", licenseDTO.toString());
         licenseService.updateLicense(licenseDTO);
+        licenseDTO.setUpdatedUser(getAccount());
         return ResponseVO.success();
     }
 

@@ -92,7 +92,11 @@ function createTable(records) {
 function downloadKey(data, flag) {
     let a = document.createElement("a");
     let objectUrl = window.URL.createObjectURL(new Blob([getPath("/keystore/" + data.id + "/" + flag)]));
-    a.download = 'license.lic';
+    if (flag) {
+        a.download = 'privateKeys.keystore';
+    }else {
+        a.download = 'publicCerts.keystore';
+    }
     a.href = objectUrl;
     a.click();
     window.URL.revokeObjectURL(objectUrl);

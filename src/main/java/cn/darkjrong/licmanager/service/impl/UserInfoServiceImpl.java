@@ -11,6 +11,7 @@ import cn.darkjrong.licmanager.common.pojo.dto.UserInfoDTO;
 import cn.darkjrong.licmanager.common.pojo.entity.UserInfo;
 import cn.darkjrong.licmanager.common.pojo.query.UserInfoQuery;
 import cn.darkjrong.licmanager.common.pojo.vo.UserInfoVO;
+import cn.darkjrong.licmanager.common.utils.AuthUtils;
 import cn.darkjrong.licmanager.mapper.UserInfoMapper;
 import cn.darkjrong.licmanager.service.UserInfoService;
 import cn.darkjrong.licmanager.service.base.impl.BaseServiceImpl;
@@ -138,7 +139,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfoMapper, UserInf
         Assert.isFalse(StrUtil.equals(AuthConstant.ADMINISTRATOR, account), ResponseEnum.SYSTEM_ADMINISTRATOR_CANNOT_DISABLE.getMessage());
 
         // 判断禁用用户是否是当前登录用户
-//        Assert.isFalse(StrUtil.equals(AuthUtils.getCurrentUser(), userInfo.getAccount()), ResponseEnum.CURRENT_USER_CANNOT_DISABLE.getMessage());
+        Assert.isFalse(StrUtil.equals(AuthUtils.getCurrentUser(), userInfo.getAccount()), ResponseEnum.CURRENT_USER_CANNOT_DISABLE.getMessage());
 
         if (Validator.equal(NumberConstant.A_NEGATIVE, userInfo.getStatus())) {
             userInfoMapper.updateStatusById(userInfo.getId(), NumberConstant.ONE);
@@ -148,6 +149,13 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfoMapper, UserInf
             log.error("disableUserInfo() Invalid specified state");
             throw new LicenseWebException(ResponseEnum.INVALID_SPECIFIED_STATE);
         }
+    }
+
+    @Override
+    public UserInfoVO findUserInfoByAccount(String account) {
+        Assert.notBlank(account, ResponseEnum.THE_ACCOUNT_CANNOT_BE_EMPTY.getMessage());
+        UserInfo userInfo = userInfoMapper.findUserInfoByAccount(account);
+        return this.objectConversion(userInfo);
     }
 
     @Override

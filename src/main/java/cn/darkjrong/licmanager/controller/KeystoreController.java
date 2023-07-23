@@ -35,7 +35,7 @@ import java.util.List;
 @RestController
 @Api(tags = "秘钥库管理")
 @RequestMapping("/keystore")
-public class KeystoreController {
+public class KeystoreController extends BaseController {
 
     @Autowired
     private KeystoreService keystoreService;
@@ -44,14 +44,16 @@ public class KeystoreController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVO<Void> saveKeystore(@Validated @RequestBody KeystoreDTO keystoreDTO) {
         log.info("saveKeystore {}", keystoreDTO.toString());
+        keystoreDTO.setCreatedUser(getAccount());
         keystoreService.saveKeystore(keystoreDTO);
         return ResponseVO.success();
     }
 
-    @ApiOperation("添加秘钥库")
+    @ApiOperation("修改秘钥库")
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVO<Void> updateKeystore(@Validated @RequestBody KeystoreDTO keystoreDTO) {
         log.info("updateKeystore {}", keystoreDTO.toString());
+        keystoreDTO.setUpdatedUser(getAccount());
         keystoreService.updateKeystore(keystoreDTO);
         return ResponseVO.success();
     }

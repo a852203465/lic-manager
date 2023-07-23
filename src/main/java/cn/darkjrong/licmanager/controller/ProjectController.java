@@ -31,24 +31,26 @@ import java.util.List;
 @Api(tags = "项目信息管理")
 @RestController
 @RequestMapping("/project")
-public class ProjectController {
+public class ProjectController extends BaseController {
 
     @Autowired
-    private ProjectService ProjectService;
+    private ProjectService projectService;
 
     @ApiOperation("添加项目")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVO<Void> saveProject(@Validated @RequestBody ProjectDTO projectDTO) {
         log.info("saveProject {}", projectDTO.toString());
-        ProjectService.saveProject(projectDTO);
+        projectDTO.setCreatedUser(getAccount());
+        projectService.saveProject(projectDTO);
         return ResponseVO.success();
     }
 
-    @ApiOperation("添加项目")
+    @ApiOperation("修改项目")
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVO<Void> updateProject(@Validated @RequestBody ProjectDTO projectDTO) {
         log.info("updateProject {}", projectDTO.toString());
-        ProjectService.updateProject(projectDTO);
+        projectDTO.setUpdatedUser(getAccount());
+        projectService.updateProject(projectDTO);
         return ResponseVO.success();
     }
 
@@ -57,7 +59,7 @@ public class ProjectController {
     public ResponseVO<PageVO<ProjectVO>> queryProject(@Validated ProjectFilterDTO filterDTO) {
         log.info("queryProject {}", filterDTO.toString());
         ValidationUtil.validate(filterDTO);
-        return ResponseVO.success(ProjectService.page(filterDTO));
+        return ResponseVO.success(projectService.page(filterDTO));
     }
 
     @ApiOperation("删除项目")
@@ -67,7 +69,7 @@ public class ProjectController {
     })
     public ResponseVO<Void> deleteProject(@PathVariable("id") @NotNull(message = "主键ID 不能为空") Long id) {
         log.info("deleteProject {}", id);
-        ProjectService.delete(id);
+        projectService.delete(id);
         return ResponseVO.success();
     }
 
@@ -75,7 +77,7 @@ public class ProjectController {
     @DeleteMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVO<Void> deleteProjects(@RequestBody @Validated List<Long> ids) {
         log.info("deleteProjects {}", ids);
-        ProjectService.deleteProject(ids);
+        projectService.deleteProject(ids);
         return ResponseVO.success();
     }
 

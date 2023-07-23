@@ -33,7 +33,7 @@ import java.util.List;
 @Api(tags = "用户信息管理")
 @RestController
 @RequestMapping("/userInfo")
-public class UserInfoController {
+public class UserInfoController extends BaseController {
 
     @Autowired
     private UserInfoService userInfoService;
@@ -42,14 +42,16 @@ public class UserInfoController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVO<Void> saveUserInfo(@Validated @RequestBody UserInfoDTO userInfoDTO) {
         log.info("saveUserInfo {}", userInfoDTO.toString());
+        userInfoDTO.setCreatedUser(getAccount());
         userInfoService.saveUserInfo(userInfoDTO);
         return ResponseVO.success();
     }
 
-    @ApiOperation("添加用户")
+    @ApiOperation("修改用户")
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseVO<Void> updateUserInfo(@Validated @RequestBody UserInfoDTO userInfoDTO) {
         log.info("updateUserInfo {}", userInfoDTO.toString());
+        userInfoDTO.setUpdatedUser(getAccount());
         userInfoService.updateUserInfo(userInfoDTO);
         return ResponseVO.success();
     }
