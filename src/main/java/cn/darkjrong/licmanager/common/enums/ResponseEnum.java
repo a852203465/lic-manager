@@ -77,9 +77,14 @@ public enum ResponseEnum {
     THE_LICENSE_ALREADY_EXISTS(5004, "许可证已存在"),
     THE_LICENSE_DOES_NOT_EXIST(5005, "许可证不存在,或已删除"),
     UNGENERATED_LICENSE(5006, "未生成许可证,请先生成"),
-
-
-
+    THE_USER_ALREADY_EXISTS(5007, "用户已存在"),
+    THE_USER_DOES_NOT_EXIST(5008, "用户不存在,或已删除"),
+    THE_OLD_PASSWORD_IS_INCORRECT(5009, "原密码不正确"),
+    THE_NEW_PASSWORD_IS_THE_SAME_AS_THE_OLD_PASSWORD(5010, "新密码与原密码相同"),
+    SYSTEM_ADMINISTRATOR_CANNOT_DISABLE(5011,"系统管理员不能禁用"),
+    CURRENT_USER_CANNOT_DISABLE(5012,"当前用户不能禁用, 该用户为当前登录用户"),
+    THE_ACCOUNT_CANNOT_BE_EMPTY(5013, "账号不能为空"),
+    THE_PASSWORD_FORMAT_IS_INCORRECT(5014, "密码格式不正确"),
 
 
 

@@ -46,4 +46,9 @@ public class PageController {
         return "license";
     }
 
+    @RequestMapping("page-userInfo")
+    public String userInfo() {
+        return "userInfo";
+    }
+
 }

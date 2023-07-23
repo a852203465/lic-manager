@@ -14,7 +14,7 @@ public class RegularVerifyConstant {
     /**
      * 密码匹配正则  长度8~16  （大小写字母、数字、特殊符号 四选二）
      */
-    public static final String PWD_REG = "^(?![A-Z]+$)(?![a-z]+$)(?!\\d+$)(?![\\W_]+$)[a-zA-Z0-9\\W_]{8,16}$";
+    public static final String PWD_REG = "^(?!^(\\d+|[a-zA-Z]+|[~!@#$%^&*()_.]+)$)^[\\w~!@#$%^&*()_.]{6,16}$";
 
     /**
      * 电话正则匹配

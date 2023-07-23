@@ -16,6 +16,10 @@
     <script src="plugins/jquery-3.7.0.min.js"></script>
     <script src="plugins/layui-v2.8.11/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/xadmin.js"></script>
+    <script type="text/javascript" src="plugins/lodash.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/request.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
 
 </head>
 <body>
@@ -29,14 +33,15 @@
     <!--顶部右侧-->
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
-            <a href="javascript:;">admin</a>
-            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+            <a id="currentUser" href="javascript:;">admin</a>
+            <dl class="layui-nav-child">
                 <dd><a onClick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
+                <dd><a onClick='updatePwd()'>修改密码</a></dd>
                 <dd><a onClick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
                 <dd><a href="login.html">退出</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item to-index"><a href="#">前台首页</a></li>
+        <li class="layui-nav-item to-index"><a _href="welcome">前台首页</a></li>
     </ul>
 
 </div>
@@ -97,12 +102,12 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="html/admin-list.html">
+                        <a _href="page-userInfo">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>管理员列表</cite>
                         </a>
                     </li>
-                    <li>
+                    <!--<li>
                         <a _href="html/admin-role.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>角色管理</cite>
@@ -113,7 +118,7 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>权限管理</cite>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
             </li>
         </ul>
@@ -138,6 +143,53 @@
 <div class="page-content-bg"></div>
 <!-- 右侧主体结束 -->
 <!-- 中部结束 -->
+
+<div id="update-pwd-form" style="display: none">
+    <form class="layui-form" lay-filter="layui-update-pwd-form">
+        <div class="layui-form-item">
+            <label for="update-pwd-account" class="layui-form-label">
+                <span class="x-red">*</span>账号
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="update-pwd-account" disabled name="account" required lay-verify="required|account" autocomplete="off" lay-vertype="tips"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="update-oldPwd-password" class="layui-form-label">
+                <span class="x-red">*</span>原密码
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" id="update-oldPwd-password" name="oldPwd" required lay-verify="required|password" autocomplete="off" lay-vertype="tips"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="update-newPwd-password" class="layui-form-label">
+                <span class="x-red">*</span>新密码
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" id="update-newPwd-password" name="newPwd" required lay-verify="required|password" autocomplete="off" lay-vertype="tips"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="update-confirmPwd-password" class="layui-form-label">
+                <span class="x-red">*</span>确认密码
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" id="update-confirmPwd-password" name="confirmPwd" required lay-verify="required|password" autocomplete="off" lay-vertype="tips"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="updatePwd" class="layui-form-label"></label>
+            <button id="updatePwd" class="layui-btn" lay-filter="updatePwd" lay-submit="">提交</button>
+        </div>
+    </form>
+</div>
+
 
 <!-- 底部开始 -->
 <!--<div class="footer">
