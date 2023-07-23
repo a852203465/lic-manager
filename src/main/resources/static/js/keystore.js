@@ -1,19 +1,6 @@
 $(function () {
-    layui.use('laydate', function () {
-        let layDate = layui.laydate;
-
-        //执行一个layDate实例
-        layDate.render({
-            type: 'datetime',
-            elem: '#start' //指定元素
-        });
-
-        //执行一个layDate实例
-        layDate.render({
-            type: 'datetime',
-            elem: '#end' //指定元素
-        });
-    });
+    initDate('#start');
+    initDate('#end');
     search();
 })
 
@@ -103,7 +90,13 @@ function createTable(records) {
  * @param flag
  */
 function downloadKey(data, flag) {
-    window.location.href="/keystore/" + data.id + "/" + flag;
+    let a = document.createElement("a");
+    let objectUrl = window.URL.createObjectURL(new Blob([getPath("/keystore/" + data.id + "/" + flag)]));
+    a.download = 'license.lic';
+    a.href = objectUrl;
+    a.click();
+    window.URL.revokeObjectURL(objectUrl);
+    a.remove();
 }
 
 /**
@@ -146,15 +139,9 @@ function deleteData(obj) {
  * @returns {*} 分页数据
  */
 function pageSearch(currentPage, pageSize) {
-    let start = $("#start").val();
-    let end = $("#end").val();
+    let start = date2Timestamp($("#start").val());
+    let end = date2Timestamp($("#end").val());
     let name = $("#name").val();
-    if (!_.isNil(start) && !_.isEmpty(start)) {
-        start = new Date(start).getTime();
-    }
-    if (!_.isNil(end)&& !_.isEmpty(end)) {
-        end = new Date(end).getTime();
-    }
 
     let pageDTO = {
         'currentPage': currentPage,
@@ -262,8 +249,6 @@ function update(data) {
                 "name": data.name,
                 "validity": data.validity,
                 "password": data.password,
-                "createdUser": data.createdUser,
-                "createdTime": data.createdTime,
                 "description": data.description,
             });
         }
@@ -304,7 +289,14 @@ function validate(form) {
     });
 }
 
-
-
+/**
+ * 清空条件
+ */
+function clean() {
+    $("#start").val('');
+    $("#end").val('');
+    $("#name").val('');
+    search();
+}
 
 

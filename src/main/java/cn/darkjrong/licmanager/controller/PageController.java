@@ -41,5 +41,9 @@ public class PageController {
         return "project";
     }
 
+    @RequestMapping("page-license")
+    public String license() {
+        return "license";
+    }
 
 }

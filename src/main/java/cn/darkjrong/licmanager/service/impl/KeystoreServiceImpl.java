@@ -55,6 +55,7 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
     private ProjectService projectService;
 
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public Boolean delete(Serializable id) {
         Assert.notNull(id, ResponseEnum.THE_ID_CANNOT_BE_EMPTY.getMessage());
         Assert.isFalse(CollectionUtil.isNotEmpty(projectService.findProjectByKeystoreId(Convert.toLong(id))),
@@ -139,6 +140,14 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         }else {
             fileService.download(keystore.getPublicKey(), KeyStoreUtils.PUBLIC_CERTS, request, response);
         }
+    }
+
+    @Override
+    public byte[] findPrivateKeyById(Long id) {
+        Assert.notNull(id, ResponseEnum.THE_ID_CANNOT_BE_EMPTY.getMessage());
+        Keystore keystore = this.getById(id);
+        Assert.notNull(keystore, ResponseEnum.THE_KEY_LIBRARY_DOES_NOT_EXIST.getMessage());
+        return keystore.getPrivateKey();
     }
 
 

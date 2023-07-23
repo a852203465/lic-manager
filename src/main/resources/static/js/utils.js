@@ -36,11 +36,18 @@ function ts2Time(timestamp) {
     let date = new Date(timestamp);
     let Y = date.getFullYear() + '-';
     let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    let D = date.getDate() + ' ';
-    let h = date.getHours() + ':';
-    let m = date.getMinutes() + ':';
-    let s = date.getSeconds();
+    let D = (String(date.getDate()).length < 2 ? '0' + String(date.getDate()) : date.getDate()) + ' ';
+    let h = (String(date.getHours()).length < 2 ? '0' + String(date.getHours()) : date.getHours()) + ':';
+    let m = (String(date.getMinutes()).length < 2 ? '0' + String(date.getMinutes()) : date.getMinutes()) + ':';
+    let s = String(date.getSeconds()).length < 2 ? '0' + String(date.getSeconds()) : date.getSeconds();
     return Y + M + D + h + m + s;
+}
+
+function date2Timestamp(date) {
+    if (!_.isNil(date) && !_.isEmpty(date)) {
+        return new Date(date).getTime();
+    }
+    return null;
 }
 
 function warning(msg) {
@@ -93,7 +100,15 @@ function nowDate() {
     return year + "-" + month + "-" + day + " " + hour + sign2 + minutes + sign2 + seconds;
 }
 
-
+function initDate(divId) {
+    layui.use('laydate', function () {
+        let layDate = layui.laydate;
+        layDate.render({
+            type: 'datetime',
+            elem: divId,
+        });
+    });
+}
 
 
 

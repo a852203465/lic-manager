@@ -51,6 +51,20 @@ function put(url, params) {
     return data;
 }
 
+function getPath(url, param) {
+    let data;
+    $.ajax({
+        method: "GET",
+        url: url + "/" + param,
+        async: false,
+        contentType: 'application/json',
+        success: function(res) {
+            data = res;
+        }
+    });
+    return data;
+}
+
 function delPath(url, param) {
     let data;
     $.ajax({
@@ -74,6 +88,21 @@ function patchPath(url, param) {
         contentType: 'application/json',
         success: function(res) {
             data = callback(res);
+        }
+    });
+    return data;
+}
+
+function patchBody(url, body) {
+    let data;
+    $.ajax({
+        method: "PATCH",
+        url: url,
+        async: false,
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        success: function(res) {
+            data = res;
         }
     });
     return data;

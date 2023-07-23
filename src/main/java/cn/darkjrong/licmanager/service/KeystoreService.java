@@ -57,7 +57,13 @@ public interface KeystoreService extends BaseService<Keystore, Keystore, Keystor
      */
     void downloadPublic(Long id, Boolean flag, HttpServletRequest request, HttpServletResponse response);
 
-
+    /**
+     * 根据ID查询私钥
+     *
+     * @param id id
+     * @return {@link byte[]}
+     */
+    byte[] findPrivateKeyById(Long id);
 
 
 

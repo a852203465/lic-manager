@@ -56,8 +56,11 @@
             <if test="telephone != null and telephone != ''">
                 and telephone like concat('%', #{telephone,jdbcType=VARCHAR}, '%')
             </if>
-            <if test="startTime != null and endTime != null">
-                and created_time between #{startTime,jdbcType=BIGINT} and #{endTime,jdbcType=BIGINT}
+            <if test="startTime != null">
+                and created_time <![CDATA[ >= ]]> #{startTime,jdbcType=BIGINT}
+            </if>
+            <if test="endTime != null">
+                and created_time <![CDATA[ <= ]]> #{endTime,jdbcType=BIGINT}
             </if>
         </where>
     </select>

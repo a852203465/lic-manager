@@ -36,11 +36,12 @@
         description
     </sql>
 
-    <select id="findLicenseByName" resultMap="BaseResultMap">
+    <select id="findLicenseByProjectIdAndName" resultMap="BaseResultMap">
         select
             <include refid="Base_Column_List"/>
         from license
-        where name = #{name,jdbcType=VARCHAR}
+        where project_id = #{projectId,jdbcType=BIGINT}
+        and name = #{name,jdbcType=VARCHAR}
     </select>
 
     <select id="findLicense" resultMap="BaseResultMap">
@@ -57,9 +58,19 @@
             <if test="subject != null and subject != ''">
                 and subject like concat('%', #{subject,jdbcType=VARCHAR}, '%')
             </if>
-            <if test="startTime != null and endTime != null">
-                and expired_time between #{startTime,jdbcType=BIGINT} and #{endTime,jdbcType=BIGINT}
+            <if test="startTime != null">
+                and expired_time <![CDATA[ >= ]]> #{startTime,jdbcType=BIGINT}
+            </if>
+            <if test="endTime != null">
+                and expired_time <![CDATA[ <= ]]> #{endTime,jdbcType=BIGINT}
             </if>
         </where>
+    </select>
+
+    <select id="findLicenseByProjectId" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from license
+        where project_id = #{projectId,jdbcType=BIGINT}
     </select>
 </mapper>

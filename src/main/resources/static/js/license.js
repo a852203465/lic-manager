@@ -1,16 +1,16 @@
 $(function () {
     initDate('#start');
     initDate('#end');
-    searchKeystore('#select-keystore');
+    searchProject('#select-project');
     search();
 })
 
 /**
- * 查询秘钥库
+ * 查询项目
  */
-function searchKeystore(divId) {
+function searchProject(divId) {
     return new Promise(resolve => {
-        let page = get("/keystore", {'currentPage': -1,});
+        let page = get("/project", {'currentPage': -1,});
         layui.use(['form'], function () {
             let form = layui.form;
             $.each(page.records, function (index, item) {
@@ -51,21 +51,35 @@ function createTable(records) {
                     type: 'checkbox',
                     toolbar: '<div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon" onclick="delAll()">&#xe605;</i></div> '
                 },
-                {title: '所属秘钥库', templet: '<div>{{d.keystore.name}}</div>'},
+                {title: '所属项目', templet: '<div>{{d.project.name}}</div>'},
                 {field: 'name', title: '名称'},
-                {field: 'company', title: '公司'},
-                {field: 'contact', title: '联系人'},
-                {field: 'telephone', title: '联系电话'},
+                {field: 'subject', title: '证书主题'},
+                {field: 'consumerAmount', title: '用户数量'},
+                {
+                    field: 'genTime', title: '生成时间', sort: true,
+                    templet: function (row) {
+                        return ts2Time(row.genTime);
+                    }
+                },
+                {
+                    field: 'expiredTime', title: '失效时间', sort: true,
+                    templet: function (row) {
+                        return ts2Time(row.expiredTime);
+                    }
+                },
                 {field: 'createdUser', title: '添加人'},
                 {
                     field: 'createdTime', title: '添加时间', sort: true,
                     templet: function (row) {
-                        return ts2Time(row.createdTime)
+                        return ts2Time(row.createdTime);
                     }
                 },
                 {field: 'description', title: '描述'},
                 {
                     fixed: 'right', width: 100, title: '操作', toolbar: '<div class="td-manage">\n' +
+                        '              <a title="详情" lay-event="details" href="javascript:;">\n' +
+                        '                <i class="layui-icon">&#xe63c;</i>\n' +
+                        '              </a>\n' +
                         '              <a title="编辑" lay-event="update" href="javascript:;">\n' +
                         '                <i class="layui-icon">&#xe642;</i>\n' +
                         '              </a>\n' +
@@ -88,6 +102,8 @@ function createTable(records) {
                 update(data);
             } else if ("delete" === layEvent) {
                 deleteData(data);
+            }else if ("details" === layEvent) {
+                details(data);
             }
         });
     });
@@ -114,8 +130,6 @@ function loadPage(total) {
             }
         });
     });
-
-
 }
 
 /**
@@ -125,31 +139,29 @@ function loadPage(total) {
  * @returns {*} 分页数据
  */
 function pageSearch(currentPage, pageSize) {
-    let keystoreId = $("#select-keystore").find("option:selected").val();
+    let keystoreId = $("#select-project").find("option:selected").val();
     let name = $("#name").val();
-    let company = $("#company").val();
-    let contact = $("#contact").val();
+    let subject = $("#subject").val();
     let start = date2Timestamp($("#start").val());
     let end = date2Timestamp($("#end").val());
 
     let pageDTO = {
         'currentPage': currentPage,
         'pageSize': pageSize,
-        'keystoreId' : keystoreId,
+        'keystoreId': keystoreId,
         'startTime': start,
         'endTime': end,
         'name': name,
-        'company': company,
-        'contact': contact,
+        'subject': subject,
     };
-    return get("/project", pageDTO);
+    return get("/license", pageDTO);
 }
 
 /**
  * 新增
  */
 function add() {
-    searchKeystore('#add-keystore')
+    searchProject('#add-project')
         .then(res => {
             var form = layui.form;
             layer.open({
@@ -159,16 +171,15 @@ function add() {
                 shadeClose: true,
                 shade: 0.4,
                 maxmin: true,
-                title: '新增项目',
+                title: '新增许可证',
                 content: $('#add-form'),
                 success: function (index) {
                     form.render();
                     validate(form);
 
-                    // 表单提交事件
                     form.on('submit(add)', function (data) {
                         let field = data.field;
-                        let res = post("/project", field);
+                        let res = post("/license", field);
                         if (!isSuccess(res.code)) {
                             error(res.message);
                             return false;
@@ -184,7 +195,7 @@ function add() {
  * 修改
  */
 function update(data) {
-    searchKeystore('#update-keystore').then(res =>{
+    searchProject('#update-project').then(res =>{
         let form = layui.form;
         layer.open({
             type: 1,
@@ -193,15 +204,15 @@ function update(data) {
             shadeClose: true,
             shade: 0.4,
             maxmin: true,
-            title: '修改项目',
+            title: '修改许可证',
             content: $('#update-form'),
             success: function (index) {
                 form.val("layui-update-form", {
-                    "keystoreId": data.keystore.id,
+                    "projectId": data.project.id,
                     "name": data.name,
-                    "company": data.company,
-                    "contact": data.contact,
-                    "telephone": data.telephone,
+                    "subject": data.subject,
+                    "genTime": new Date(data.genTime),
+                    "expiredTime": new Date(data.expiredTime),
                     "description": data.description,
                 });
                 form.render("select");
@@ -211,7 +222,7 @@ function update(data) {
         form.on('submit(update)', function (new_obj) {
             let field = new_obj.field;
             field.id = data.id;
-            let res = put("/project", field);
+            let res = put("/license", field);
             if (!isSuccess(res.code)) {
                 error(res.message);
                 return false;
@@ -234,18 +245,44 @@ function validate(form) {
             if (/(^_)|(__)|(_+$)/.test(value)) return '名称首尾不能出现 _ 下划线';
             if (/^\d+$/.test(value)) return '名称不能全为数字';
         },
-        company: function (value, item) {
+        subject: function (value, item) {
             if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
-                return '公司名不能有特殊字符';
+                return '证书主题不能有特殊字符';
             }
-            if (/(^_)|(__)|(_+$)/.test(value)) return '公司名首尾不能出现 _ 下划线';
-            if (/^\d+$/.test(value)) return '公司名不能全为数字';
+            if (/(^_)|(__)|(_+$)/.test(value)) return '证书主题首尾不能出现 _ 下划线';
+            if (/^\d+$/.test(value)) return '证书主题不能全为数字';
         },
-        keystoreId: function (value, item) {
+        projectId: function (value, item) {
             if (_.isNil(value) || _.isEmpty(value)) {
-                return '秘钥库不能为空';
+                return '项目不能为空';
             }
         },
+        description: function (value, item) {
+            if (_.isNil(value) || _.isEmpty(value)) {
+                return '证书描述不能为空';
+            }
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                return '证书描述不能有特殊字符';
+            }
+            if (/(^_)|(__)|(_+$)/.test(value)) return '证书主题首尾不能出现 _ 下划线';
+        },
+        privateAlias: function (value, item) {
+            if (_.isNil(value) || _.isEmpty(value)) {
+                return '证书别名不能为空';
+            }
+        },
+        appCode: function (value, item) {
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                return '申请码不能有特殊字符';
+            }
+            if (/(^_)|(__)|(_+$)/.test(value)) return '申请码首尾不能出现 _ 下划线';
+            if (/^\d+$/.test(value)) return '申请码不能全为数字';
+        },
+        expiredTime: function (value, item) {
+            var now = new Date();
+            var time = new Date(value);
+            if(now > time) return '失效时间必须大于当前时间';
+        }
     });
 }
 
@@ -260,7 +297,7 @@ function delAll() {
             ids.push(a.id);
         })
         layer.confirm('确认要删除吗？', function (index) {
-            delBody("/project/batch", ids);
+            delBody("/license/batch", ids);
             layer.close(index);
             search();
         });
@@ -273,10 +310,82 @@ function delAll() {
  */
 function deleteData(obj) {
     layer.confirm('确认要删除吗？', function (index) {
-        delPath("/project", obj.id);
+        delPath("/license", obj.id);
         layer.close(index);
         search();
     });
+}
+
+/**
+ * 明细
+ * @param data 数据
+ */
+function details(data) {
+    searchProject('#details-project').then(res =>{
+        let form = layui.form;
+
+        initDate('#details-genTime');
+        initDate('#details-expiredTime');
+
+        layer.open({
+            type: 1,
+            area: [($(window).width() * 0.8) + 'px', ($(window).height()) + 'px'],
+            fix: false, //不固定
+            shadeClose: true,
+            shade: 0.4,
+            maxmin: true,
+            title: '许可证详情',
+            content: $('#details-form'),
+            success: function (index) {
+                form.val("layui-details-form", {
+                    "projectId": data.project.id,
+                    "name": data.name,
+                    "subject": data.subject,
+                    "privateAlias": data.privateAlias,
+                    "appCode": data.appCode,
+                    "consumerAmount": data.consumerAmount,
+                    "genTime": ts2Time(data.genTime),
+                    "expiredTime": ts2Time(data.expiredTime),
+                    "description": data.description,
+                });
+                form.render("select");
+            }
+        });
+        validate(form);
+        form.on('submit(genLic)', function (new_obj) {
+            let field = new_obj.field;
+            field.id = data.id;
+            field.expiredTime = date2Timestamp(field.expiredTime);
+            let res = patchBody("/license/gen", field);
+            if (!isSuccess(res.code)) {
+                error(res.message);
+                return false;
+            }
+            return true;
+        });
+        form.on('submit(download)', function (obj) {
+            let res = getPath("/license/validate", data.id);
+            if (!isSuccess(res.code)) {
+                error(res.message);
+                return false;
+            }
+            download(data);
+        });
+    })
+}
+
+/**
+ * 下载授权文件
+ * @param data
+ */
+function download(data) {
+    let a = document.createElement("a");
+    let objectUrl = window.URL.createObjectURL(new Blob([getPath("/license/download/" + data.id)]));
+    a.download = 'license.lic';
+    a.href = objectUrl;
+    a.click();
+    window.URL.revokeObjectURL(objectUrl);
+    a.remove();
 }
 
 /**
@@ -287,11 +396,13 @@ function clean() {
     $("#end").val('');
     $("#name").val('');
     $("#subject").val('');
-    $("#company").val('');
-    $("#contact").val('');
-    $("#select-keystore option[value='']").prop("selected", true);
+    $('#select-project').val('').trigger('chosen:updated');
     search();
 }
+
+
+
+
 
 
 

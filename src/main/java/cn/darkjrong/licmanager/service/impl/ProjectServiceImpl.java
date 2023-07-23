@@ -8,9 +8,12 @@ import cn.darkjrong.licmanager.common.pojo.query.ProjectQuery;
 import cn.darkjrong.licmanager.common.pojo.vo.ProjectVO;
 import cn.darkjrong.licmanager.mapper.ProjectMapper;
 import cn.darkjrong.licmanager.service.KeystoreService;
+import cn.darkjrong.licmanager.service.LicenseService;
 import cn.darkjrong.licmanager.service.ProjectService;
 import cn.darkjrong.licmanager.service.base.impl.BaseServiceImpl;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
@@ -38,6 +41,18 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectMapper, Project, 
 
     @Autowired
     private KeystoreService keystoreService;
+
+    @Autowired
+    private LicenseService licenseService;
+
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public Boolean delete(Serializable id) {
+        Assert.notNull(id, ResponseEnum.THE_ID_CANNOT_BE_EMPTY.getMessage());
+        Assert.isFalse(CollectionUtil.isNotEmpty(licenseService.findLicenseByProjectId(Convert.toLong(id))),
+                ResponseEnum.DATA_QUOTE.getMessage());
+        return super.delete(id);
+    }
 
     @Override
     public List<Project> queryList(PageDTO pageDTO) {

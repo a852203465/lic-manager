@@ -16,12 +16,13 @@ import java.util.List;
 public interface LicenseMapper extends BaseMapper<License> {
 
     /**
-     * 查询许可证通过名字
+     * 查询许可证通过名字和项目ID
      *
      * @param name 名字
+     * @param projectId 项目ID
      * @return {@link License}
      */
-    License findLicenseByName(@Param("name") String name);
+    License findLicenseByProjectIdAndName(@Param("projectId") Long projectId, @Param("name") String name);
 
     /**
      * 查询许可证
@@ -31,6 +32,13 @@ public interface LicenseMapper extends BaseMapper<License> {
      */
     List<License> findLicense(LicenseQuery query);
 
+    /**
+     * 查询许可证通过项目ID
+     *
+     * @param projectId 项目ID
+     * @return {@link List}<{@link License}>
+     */
+    List<License> findLicenseByProjectId(@Param("projectId") Long projectId);
 
 
 
