@@ -68,7 +68,8 @@ public enum ResponseEnum {
     CURRENT_USER_CANNOT_DISABLE(5012,"当前用户不能禁用, 该用户为当前登录用户"),
     THE_ACCOUNT_CANNOT_BE_EMPTY(5013, "账号不能为空"),
     THE_PASSWORD_FORMAT_IS_INCORRECT(5014, "密码格式不正确"),
-
+    SYSTEM_ADMINISTRATOR_CANNOT_DELETE(5015, "系统管理员不能删除"),
+    THE_CURRENT_LOGIN_USER_CANNOT_BE_DELETED(5016, "当前登录用户不可删除"),
 
 
 

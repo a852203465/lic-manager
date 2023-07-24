@@ -17,9 +17,11 @@ import cn.darkjrong.licmanager.service.UserInfoService;
 import cn.darkjrong.licmanager.service.base.impl.BaseServiceImpl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -43,6 +45,30 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfoMapper, UserInf
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public Boolean delete(Serializable id) {
+
+        Assert.notNull(id, ResponseEnum.THE_ID_CANNOT_BE_EMPTY.getMessage());
+        UserInfo userInfo = this.getById(id);
+        Assert.notNull(userInfo, ResponseEnum.THE_USER_DOES_NOT_EXIST.getMessage());
+
+        // 判断是否管理员
+        if (AuthConstant.ADMINISTRATOR.equals(userInfo.getAccount())) {
+            log.error("deleteUserInfoById()  System administrator cannot delete");
+            throw new LicenseWebException(ResponseEnum.SYSTEM_ADMINISTRATOR_CANNOT_DELETE);
+        }
+
+        String currentUser = AuthUtils.getCurrentUser();
+
+        if (ObjectUtil.equals(Convert.toLong(id), userInfoMapper.findUserInfoByAccount(currentUser).getId())) {
+            log.error("deleteUserInfoById() The current logged-in user cannot be deleted");
+            throw new LicenseWebException(ResponseEnum.THE_CURRENT_LOGIN_USER_CANNOT_BE_DELETED);
+        }
+
+        return super.delete(id);
+    }
 
     @Override
     public List<UserInfo> queryList(PageDTO pageDTO) {
