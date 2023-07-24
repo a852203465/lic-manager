@@ -1,0 +1,72 @@
+version: "3"
+
+services:
+  lic-manager:
+    image: a852203465/lic-manager:latest
+    container_name: lic-manager
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_HOST: mysql8
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: lic_manager
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: JIARONG.207718
+    ports:
+      - "7000:8080"
+    networks:
+      - lic_manager_net
+
+  mysql8:
+    image: mysql:8.0.31
+    container_name: mysql
+    restart: always
+    volumes:
+      - /data/mysql:/var/lib/mysql
+      - /etc/localtime:/etc/localtime
+      - ./conf/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - "3306:3306"
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: JIARONG.207718
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --max_connections=2000
+      --wait_timeout=20000
+      --default-authentication-plugin=mysql_native_password
+      --lower_case_table_names=1
+    networks:
+      - lic_manager_net
+
+
+networks:
+  lic_manager_net:
+    external: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
