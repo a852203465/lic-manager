@@ -64,11 +64,14 @@ function createTable(records) {
                 {field: 'mail', title: '邮箱'},
                 {
                     field: 'sex', title: '性别', width: 60, templet: function (d) {
-                        if (d.sex === '0') {
-                            return '<span style="color: blue">♂</span>';
-                        } else {
-                            return '<span style="color: pink">♀</span>';
+                        if (!_.isNil(d.sex)) {
+                            if (d.sex === '1') {
+                                return '<span style="color: blue">♂</span>';
+                            } else {
+                                return '<span style="color: pink">♀</span>';
+                            }
                         }
+                        return '';
                     }
                 },
                 {field: 'telephone', title: '电话', sort: true},
