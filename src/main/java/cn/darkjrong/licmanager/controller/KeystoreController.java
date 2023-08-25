@@ -97,7 +97,7 @@ public class KeystoreController extends BaseController {
     }
 
     @ApiOperation("下载秘钥库")
-    @GetMapping(value = "/{id}/{flag}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}/{flag}")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", name = "id", dataTypeClass = Long.class, value = "主键ID", required = true),
             @ApiImplicitParam(paramType = "path", name = "flag", dataTypeClass = Boolean.class, value = "标识, true:私钥,false:公钥", required = true),

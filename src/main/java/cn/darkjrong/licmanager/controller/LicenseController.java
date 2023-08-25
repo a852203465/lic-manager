@@ -104,16 +104,16 @@ public class LicenseController extends BaseController {
     }
 
     @ApiOperation("下载许可证")
-    @GetMapping(value = "/download/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/download/{id}")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", name = "id", dataTypeClass = Long.class, value = "主键ID", required = true),
     })
-    public ResponseVO<Void> downloadLicense(@PathVariable("id") @NotNull(message = "主键ID 不能为空") Long id,
-                                            HttpServletRequest request, HttpServletResponse response) {
+    public void downloadLicense(@PathVariable("id") @NotNull(message = "主键ID 不能为空") Long id,
+                                HttpServletRequest request, HttpServletResponse response) {
         log.info("downloadLicense {}", id);
         licenseService.downloadLicense(id, request, response);
-        return ResponseVO.success();
     }
+
 
 
 

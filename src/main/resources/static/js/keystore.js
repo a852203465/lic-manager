@@ -90,17 +90,18 @@ function createTable(records) {
  * @param flag
  */
 function downloadKey(data, flag) {
-    let a = document.createElement("a");
-    let objectUrl = window.URL.createObjectURL(new Blob([getPath("/keystore/" + data.id + "/" + flag)]));
-    if (flag) {
-        a.download = 'privateKeys.keystore';
-    }else {
-        a.download = 'publicCerts.keystore';
-    }
-    a.href = objectUrl;
-    a.click();
-    window.URL.revokeObjectURL(objectUrl);
-    a.remove();
+    window.open("/keystore/" + data.id + "/" + flag, "_blank")
+    // let a = document.createElement("a");
+    // let objectUrl = window.URL.createObjectURL(new Blob([getPath("/keystore/" + data.id + "/" + flag)]));
+    // if (flag) {
+    //     a.download = 'privateKeys.keystore';
+    // }else {
+    //     a.download = 'publicCerts.keystore';
+    // }
+    // a.href = objectUrl;
+    // a.click();
+    // window.URL.revokeObjectURL(objectUrl);
+    // a.remove();
 }
 
 /**
@@ -281,7 +282,7 @@ function validate(form) {
         // 函数写法
         // 参数 value 为表单的值；参数 item 为表单的 DOM 对象
         name: function (value, item) {
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·.\\-@#*%]+$").test(value)) {
                 return '名称不能有特殊字符';
             }
             if (/(^_)|(__)|(_+$)/.test(value)) return '名称首尾不能出现 _ 下划线';

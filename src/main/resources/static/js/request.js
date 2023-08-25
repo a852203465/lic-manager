@@ -51,11 +51,11 @@ function put(url, params) {
     return data;
 }
 
-function getPath(url, param) {
+function getPath(url) {
     let data;
     $.ajax({
         method: "GET",
-        url: url + "/" + param,
+        url: url,
         async: false,
         contentType: 'application/json',
         success: function(res) {

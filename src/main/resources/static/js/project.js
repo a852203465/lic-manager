@@ -228,16 +228,10 @@ function update(data) {
 function validate(form) {
     form.verify({
         name: function (value, item) {
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
-                return '名称不能有特殊字符';
-            }
             if (/(^_)|(__)|(_+$)/.test(value)) return '名称首尾不能出现 _ 下划线';
             if (/^\d+$/.test(value)) return '名称不能全为数字';
         },
         company: function (value, item) {
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
-                return '公司名不能有特殊字符';
-            }
             if (/(^_)|(__)|(_+$)/.test(value)) return '公司名首尾不能出现 _ 下划线';
             if (/^\d+$/.test(value)) return '公司名不能全为数字';
         },

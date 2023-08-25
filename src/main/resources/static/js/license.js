@@ -239,14 +239,14 @@ function update(data) {
 function validate(form) {
     form.verify({
         name: function (value, item) {
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·-]+$").test(value)) {
                 return '名称不能有特殊字符';
             }
             if (/(^_)|(__)|(_+$)/.test(value)) return '名称首尾不能出现 _ 下划线';
             if (/^\d+$/.test(value)) return '名称不能全为数字';
         },
         subject: function (value, item) {
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·-]+$").test(value)) {
                 return '证书主题不能有特殊字符';
             }
             if (/(^_)|(__)|(_+$)/.test(value)) return '证书主题首尾不能出现 _ 下划线';
@@ -260,9 +260,6 @@ function validate(form) {
         description: function (value, item) {
             if (_.isNil(value) || _.isEmpty(value)) {
                 return '证书描述不能为空';
-            }
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
-                return '证书描述不能有特殊字符';
             }
             if (/(^_)|(__)|(_+$)/.test(value)) return '证书主题首尾不能出现 _ 下划线';
         },
@@ -279,9 +276,12 @@ function validate(form) {
             if (/^\d+$/.test(value)) return '申请码不能全为数字';
         },
         expiredTime: function (value, item) {
+            if (_.isNil(value) || _.isEmpty(value)) {
+                return '失效时间不能为空';
+            }
             var now = new Date();
             var time = new Date(value);
-            if(now > time) return '失效时间必须大于当前时间';
+            if(time < now) return '失效时间必须大于当前时间';
         }
     });
 }
@@ -355,6 +355,7 @@ function details(data) {
         form.on('submit(genLic)', function (new_obj) {
             let field = new_obj.field;
             field.id = data.id;
+            field.genTime = date2Timestamp(field.genTime);
             field.expiredTime = date2Timestamp(field.expiredTime);
             let res = patchBody("/license/gen", field);
             if (!isSuccess(res.code)) {
