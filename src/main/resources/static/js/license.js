@@ -365,7 +365,7 @@ function details(data) {
             return true;
         });
         form.on('submit(download)', function (obj) {
-            let res = getPath("/license/validate", data.id);
+            let res = getPath("/license/validate/" + data.id);
             if (!isSuccess(res.code)) {
                 error(res.message);
                 return false;
@@ -380,13 +380,14 @@ function details(data) {
  * @param data
  */
 function download(data) {
-    let a = document.createElement("a");
-    let objectUrl = window.URL.createObjectURL(new Blob([getPath("/license/download/" + data.id)]));
-    a.download = 'license.lic';
-    a.href = objectUrl;
-    a.click();
-    window.URL.revokeObjectURL(objectUrl);
-    a.remove();
+    window.open("/license/download/" + data.id, "_blank")
+    // let a = document.createElement("a");
+    // let objectUrl = window.URL.createObjectURL(new Blob([getPath("/license/download/" + data.id)]));
+    // a.download = 'license.lic';
+    // a.href = objectUrl;
+    // a.click();
+    // window.URL.revokeObjectURL(objectUrl);
+    // a.remove();
 }
 
 /**
