@@ -63,14 +63,11 @@ function createTable(records) {
                         return ts2Time(row.createdTime)
                     }
                 },
-                {field: 'description', title: '描述'},
                 {
-                    fixed: 'right', width: 100, title: '操作', toolbar: '<div class="td-manage">\n' +
-                        '              <a title="编辑" lay-event="update" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe642;</i>\n' +
+                    fixed: 'right', width: 130, title: '操作', toolbar: '<div class="td-manage">\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-blue" lay-event="update" >编辑\n' +
                         '              </a>\n' +
-                        '              <a title="删除" lay-event="delete" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe640;</i>\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-red" lay-event="delete">删除\n' +
                         '              </a>\n' +
                         '            </div>'
                 }

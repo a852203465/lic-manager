@@ -16,7 +16,10 @@ class KeystoreServiceTest extends LicManagerApplicationTests {
             KeystoreDTO keystoreDTO = new KeystoreDTO();
             keystoreDTO.setName("测试" + i);
             keystoreDTO.setValidity(1);
-            keystoreDTO.setPassword("123456a");
+            keystoreDTO.setStorePwd("123456a");
+            keystoreDTO.setPrivatePwd("123456a");
+            keystoreDTO.setPublicPwd("123456a");
+
             keystoreService.saveKeystore(keystoreDTO);
         }
 

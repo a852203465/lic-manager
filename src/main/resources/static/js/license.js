@@ -76,15 +76,12 @@ function createTable(records) {
                 },
                 {field: 'description', title: '描述'},
                 {
-                    fixed: 'right', width: 100, title: '操作', toolbar: '<div class="td-manage">\n' +
-                        '              <a title="详情" lay-event="details" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe63c;</i>\n' +
+                    fixed: 'right', width: 200, title: '操作', toolbar: '<div class="td-manage">\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm " lay-event="details" >详情\n' +
                         '              </a>\n' +
-                        '              <a title="编辑" lay-event="update" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe642;</i>\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-blue" lay-event="update" >编辑\n' +
                         '              </a>\n' +
-                        '              <a title="删除" lay-event="delete" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe640;</i>\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-red" lay-event="delete">删除\n' +
                         '              </a>\n' +
                         '            </div>'
                 }

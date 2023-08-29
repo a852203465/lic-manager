@@ -96,20 +96,15 @@ function createTable(records) {
                         return ts2Time(row.createdTime);
                     }
                 },
-                {field: 'description', title: '描述'},
                 {
-                    fixed: 'right', width: 120, title: '操作', toolbar: '<div class="td-manage">\n' +
-                        '              <a title="编辑" lay-event="update" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe642;</i>\n' +
+                    fixed: 'right', width: 300, title: '操作', toolbar: '<div class="td-manage">\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-blue" lay-event="update" >编辑\n' +
                         '              </a>\n' +
-                        '              <a title="修改密码" lay-event="updatePwd" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe673;</i>\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-orange" lay-event="updatePwd" >修改密码\n' +
                         '              </a>\n' +
-                        '              <a title="重置密码" lay-event="resetPwd" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xeb2e;</i>\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-purple" lay-event="resetPwd" >重置密码\n' +
                         '              </a>\n' +
-                        '              <a title="删除" lay-event="delete" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe640;</i>\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-red" lay-event="delete">删除\n' +
                         '              </a>\n' +
                         '            </div>'
                 }

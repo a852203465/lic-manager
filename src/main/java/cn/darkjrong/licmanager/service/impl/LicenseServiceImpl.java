@@ -137,7 +137,8 @@ public class LicenseServiceImpl extends BaseServiceImpl<LicenseMapper, License, 
         LicenseCreatorV2Param licenseCreatorV2Param = new LicenseCreatorV2Param();
         BeanUtil.copyProperties(genLicenseDTO, licenseCreatorV2Param);
         licenseCreatorV2Param.setPrivateKeysStore(privateKey);
-        licenseCreatorV2Param.setPassword(projectVO.getKeystore().getPassword());
+        licenseCreatorV2Param.setKeyPwd(projectVO.getKeystore().getPrivatePwd());
+        licenseCreatorV2Param.setStorePwd(projectVO.getKeystore().getStorePwd());
         licenseCreatorV2Param.setExpiryTime(DateUtil.date(genLicenseDTO.getExpiredTime()));
 
         byte[] bytes = licenseCreatorService.generateLicense(licenseCreatorV2Param);

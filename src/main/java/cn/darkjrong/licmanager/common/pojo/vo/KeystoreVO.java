@@ -36,10 +36,22 @@ public class KeystoreVO extends Base implements Serializable {
     private Integer validity;
 
     /**
+     * 秘钥库密码
+     */
+    @ApiModelProperty("秘钥库密码")
+    private String storePwd;
+
+    /**
      * 私钥密码
      */
     @ApiModelProperty("私钥密码")
-    private String password;
+    private String privatePwd;
+
+    /**
+     * 公钥密码
+     */
+    @ApiModelProperty("公钥密码")
+    private String publicPwd;
 
     /**
      * 私钥

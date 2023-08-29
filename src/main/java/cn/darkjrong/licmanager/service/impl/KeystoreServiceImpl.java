@@ -88,7 +88,8 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         copyOptions.setIgnoreError(Boolean.TRUE);
 
         BeanUtil.copyProperties(keystoreDTO, keystore, copyOptions);
-        SecretKey secretKey = keyStoreService.genSecretKey(Convert.toLong(keystoreDTO.getValidity()), keystore.getPassword());
+        SecretKey secretKey = keyStoreService.genSecretKey(Convert.toLong(keystoreDTO.getValidity()),
+                keystore.getStorePwd(), keystore.getPrivatePwd(), keystore.getPublicPwd());
         keystore.setPrivateKey(secretKey.getPrivateKey());
         keystore.setPublicKey(secretKey.getPublicKey());
         keystore.setCreatedTime(DateUtil.current());
@@ -123,7 +124,8 @@ public class KeystoreServiceImpl extends BaseServiceImpl<KeystoreMapper, Keystor
         Assert.notNull(id, ResponseEnum.THE_ID_CANNOT_BE_EMPTY.getMessage());
         Keystore keystore = this.getById(id);
         Assert.notNull(keystore, ResponseEnum.THE_KEY_LIBRARY_DOES_NOT_EXIST.getMessage());
-        SecretKey secretKey = keyStoreService.genSecretKey(Convert.toLong(keystore.getValidity()), keystore.getPassword());
+        SecretKey secretKey = keyStoreService.genSecretKey(Convert.toLong(keystore.getValidity()),
+                keystore.getStorePwd(), keystore.getPrivatePwd(), keystore.getPublicPwd());
         keystore.setPrivateKey(secretKey.getPrivateKey());
         keystore.setPublicKey(secretKey.getPublicKey());
         keystore.setUpdatedTime(DateUtil.current());

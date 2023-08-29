@@ -23,39 +23,33 @@ function createTable(records) {
                     toolbar: '<div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon" onclick="delAll()">&#xe605;</i></div> '
                 },
                 {field: 'name', title: '名称'},
-                {field: 'validity', title: '有效期(单位:年)'},
-                {field: 'password', title: '密码'},
-                /*{title: '私钥', toolbar: '<div class="td-manage">\n' +
-                        '              <a title="下载私钥" lay-event="privateEvent" href="javascript:;">\n' +
-                        '                <i class="layui-icon layui-icon-download-circle"></i>\n' +
-                        '              </a>\n' +
+                {field: 'validity', width: 130,title: '有效期(单位:年)'},
+                {field: 'storePwd', title: '秘钥库密码'},
+                {field: 'privatePwd', title: '私钥密码'},
+                {field: 'publicPwd', title: '公钥密码'},
+                /*{title: '公钥', toolbar: '<div class="private-key-manage">\n' +
+                        '              <a lay-event="privateEvent" class="layui-btn layui-btn-radius layui-btn-sm layui-btn-normal">下载私钥</a>\n' +
                         '            </div>'
-
                 },*/
-                {title: '公钥', toolbar: '<div class="td-manage">\n' +
-                        '              <a title="下载公钥" lay-event="publicEvent" href="javascript:;">\n' +
-                        '                <i class="layui-icon layui-icon-download-circle"></i>\n' +
-                        '              </a>\n' +
-                        '            </div>'
+                {
+                    title: '公钥', toolbar: '<div class="td-manage">\n' +
+                        '                       <a lay-event="publicEvent" class="layui-btn layui-btn-radius layui-btn-sm layui-bg-orange">下载公钥</a>\n' +
+                        '                   </div>'
                 },
-                {field: 'createdUser', title: '添加人'},
+                {field: 'createdUser', width: 100 ,title: '添加人'},
                 {
                     field: 'createdTime', title: '添加时间', sort: true,
                     templet: function (row) {
                         return ts2Time(row.createdTime)
                     }
                 },
-                {field: 'description', title: '描述'},
                 {
-                    fixed: 'right', width: 100, title: '操作', toolbar: '<div class="td-manage">\n' +
-                        '              <a title="编辑" lay-event="update" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe642;</i>\n' +
+                    fixed: 'right', width: 220, title: '操作', toolbar: '<div class="td-manage">\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-blue" lay-event="update" >编辑\n' +
                         '              </a>\n' +
-                        '               <a title="刷新秘钥" lay-event="regenerate" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe669;</i>\n' +
+                        '               <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-purple" lay-event="regenerate">刷新秘钥\n' +
                         '              </a>\n' +
-                        '              <a title="删除" lay-event="delete" href="javascript:;">\n' +
-                        '                <i class="layui-icon">&#xe640;</i>\n' +
+                        '              <a class="layui-btn layui-btn-radius layui-btn-sm layui-bg-red" lay-event="delete">删除\n' +
                         '              </a>\n' +
                         '            </div>'
                 }
@@ -75,9 +69,9 @@ function createTable(records) {
                 deleteData(data);
             } else if ("regenerate" === layEvent) {
                 regenerate(data)
-            }else if ("privateEvent" === layEvent) {
+            } else if ("privateEvent" === layEvent) {
                 downloadKey(data, true);
-            }else if ("publicEvent" === layEvent) {
+            } else if ("publicEvent" === layEvent) {
                 downloadKey(data, false);
             }
         });
@@ -253,7 +247,9 @@ function update(data) {
             form.val("layui-update-form", {
                 "name": data.name,
                 "validity": data.validity,
-                "password": data.password,
+                "storePwd": data.storePwd,
+                "privatePwd": data.privatePwd,
+                "publicPwd": data.publicPwd,
                 "description": data.description,
             });
         }
@@ -289,7 +285,9 @@ function validate(form) {
             if (/^\d+$/.test(value)) return '名称不能全为数字';
         },
         // 数组中两个成员值分别代表：[正则表达式、正则匹配不符时的提示文字]
-        password: [/(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/, '密码必须由字母和数字组成的至少6个字符组成'],
+        storePwd: [/(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/, '秘钥库密码必须由字母和数字组成的至少6个字符组成'],
+        privatePwd: [/(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/, '私钥密码必须由字母和数字组成的至少6个字符组成'],
+        publicPwd: [/(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/, '公钥密码必须由字母和数字组成的至少6个字符组成'],
         validity: [/^\d+$/, '有效期只能是数字且是整数']
     });
 }

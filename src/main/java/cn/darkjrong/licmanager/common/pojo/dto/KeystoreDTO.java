@@ -41,12 +41,27 @@ public class KeystoreDTO extends Base implements Serializable {
     private Integer validity;
 
     /**
+     * 秘钥库密码
+     */
+    @ApiModelProperty(value = "秘钥库密码", required = true)
+    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$", message = "秘钥库密码必须由字母和数字组成的至少6个字符组成")
+    @NotBlank(message = "秘钥库密码 不能为空")
+    private String storePwd;
+
+    /**
      * 私钥密码
      */
     @ApiModelProperty(value = "私钥密码", required = true)
-    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$", message = "密码必须由字母和数字组成的至少6个字符组成")
+    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$", message = "私钥密码必须由字母和数字组成的至少6个字符组成")
     @NotBlank(message = "私钥密码 不能为空")
-    private String password;
+    private String privatePwd;
 
+    /**
+     * 公钥密码
+     */
+    @ApiModelProperty(value = "公钥密码", required = true)
+    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$", message = "公钥密码必须由字母和数字组成的至少6个字符组成")
+    @NotBlank(message = "公钥密码 不能为空")
+    private String publicPwd;
 
 }
