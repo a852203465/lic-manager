@@ -6,21 +6,22 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 # DROP TABLE IF EXISTS `keystore`;
 CREATE TABLE IF NOT EXISTS `keystore`  (
-  `id` bigint NOT NULL COMMENT '主键',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
-  `validity` int NULL DEFAULT 1 COMMENT '私钥证书有效期(单位：年), 默认：1',
-  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '私钥密码',
-  `private_key` blob NULL COMMENT '私钥',
-  `public_key` blob NULL COMMENT '公钥',
-  `created_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `created_time` bigint NULL DEFAULT NULL COMMENT '创建时间',
-  `updated_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `updated_time` bigint NULL DEFAULT NULL COMMENT '更新时间',
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `idx_unique`(`name` ASC) USING BTREE COMMENT '唯一索引'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '秘钥库' ROW_FORMAT = DYNAMIC;
-
+    `id` bigint NOT NULL COMMENT '主键',
+    `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+    `validity` int NULL DEFAULT 1 COMMENT '私钥证书有效期(单位：年), 默认：1',
+    `store_pwd` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '秘钥库密码',
+    `private_pwd` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '私钥密码',
+    `public_pwd` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '公钥密码',
+    `private_key` blob NULL COMMENT '私钥',
+    `public_key` blob NULL COMMENT '公钥',
+    `created_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+    `created_time` bigint NULL DEFAULT NULL COMMENT '创建时间',
+    `updated_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+    `updated_time` bigint NULL DEFAULT NULL COMMENT '更新时间',
+    `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述',
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE INDEX `idx_unique`(`name` ASC) USING BTREE COMMENT '唯一索引'
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '秘钥库' ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of keystore
 -- ----------------------------
