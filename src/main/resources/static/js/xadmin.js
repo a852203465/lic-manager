@@ -1,3 +1,5 @@
+var cateIds = [];
+
 $(function () {
     //加载弹出层
     layui.use(['form','element'],
@@ -8,20 +10,19 @@ $(function () {
 
     //触发事件
   var tab = {
-        tabAdd: function(title,url,id){
+        tabAdd: function(title, url, id){
           //新增一个Tab项
           element.tabAdd('xbs_tab', {
             title: title 
-            ,content: '<iframe tab-id="'+id+'" frameborder="0" src="'+url+'" scrolling="yes" class="x-iframe"></iframe>'
+            ,content: '<iframe id="'+url+'" tab-id="'+id+'" frameborder="0" src="'+url+'" scrolling="yes" class="x-iframe"></iframe>'
             ,id: id
           })
         }
-        ,tabDelete: function(othis){
+        ,tabDelete: function(othis, id){
           //删除指定Tab项
-          element.tabDelete('xbs_tab', '44'); //删除：“商品管理”
+          element.tabDelete('xbs_tab', id); //删除：“商品管理”
           
-          
-          othis.addClass('layui-btn-disabled');
+          // othis.addClass('layui-btn-disabled');
         }
         ,tabChange: function(id){
           //切换到指定Tab项
@@ -59,7 +60,6 @@ $(function () {
 
     //开启表格多选
     tableCheck.init();
-      
 
     $('.container .left_open i').click(function(event) {
         if($('.left-nav').css('left')=='0px'){
@@ -134,28 +134,35 @@ $(function () {
             }
         }else{
 
-            var url = $(this).children('a').attr('_href');
-            var title = $(this).find('cite').html();
-            var index  = $('.left-nav #nav li').index($(this));
+            let url = $(this).children('a').attr('_href');
+            let title = $(this).find('cite').html();
+            let index  = $('.left-nav #nav li').index($(this));
 
-            for (var i = 0; i <$('.x-iframe').length; i++) {
-                if($('.x-iframe').eq(i).attr('tab-id')==index+1){
-                    tab.tabChange(index+1);
+            for (let i = 0; i <$('.x-iframe').length; i++) {
+                if($('.x-iframe').eq(i).attr('tab-id') == index + 1){
+
+                    //获取父级窗口
+                    let _body = window.parent;
+
+                    //获取父级窗口中的对象iframe
+                    let _iframe = _body.document.getElementById(url);
+
+                    //刷新对象iframe
+                    _iframe.contentWindow.location.reload(true);
+
+                    tab.tabChange(index + 1);
                     event.stopPropagation();
                     return;
                 }
-            };
-            
-            tab.tabAdd(title,url,index+1);
-            tab.tabChange(index+1);
+            }
+            tab.tabAdd(title, url,index + 1);
+            tab.tabChange(index + 1);
         }
-        
         event.stopPropagation();
-         
     })
     
 })
-var cateIds = [];
+
 function getCateId(cateId) {
     
     $("tbody tr[fid="+cateId+"]").each(function(index, el) {
