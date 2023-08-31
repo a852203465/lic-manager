@@ -3,6 +3,7 @@ $(function () {
     initDate('#end');
     searchProject('#select-project');
     search();
+    okLoading.close(layui.jquery);
 })
 
 /**
