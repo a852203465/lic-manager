@@ -141,13 +141,8 @@ $(function () {
             for (let i = 0; i <$('.x-iframe').length; i++) {
                 if($('.x-iframe').eq(i).attr('tab-id') == index + 1){
 
-                    //获取父级窗口
                     let _body = window.parent;
-
-                    //获取父级窗口中的对象iframe
                     let _iframe = _body.document.getElementById(url);
-
-                    //刷新对象iframe
                     _iframe.contentWindow.location.reload(true);
 
                     tab.tabChange(index + 1);

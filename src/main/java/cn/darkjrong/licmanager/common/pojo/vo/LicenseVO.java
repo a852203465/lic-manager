@@ -69,6 +69,17 @@ public class LicenseVO extends Base implements Serializable {
     @ApiModelProperty("用户数量")
     private Integer consumerAmount;
 
+    /**
+     * 验证IP地址(0:否,1:是)
+     */
+    @ApiModelProperty(value = "验证IP地址(0:否,1:是)")
+    private Integer checkIpAddress;
+
+    /**
+     * 验证mac地址(0:否,1:是)
+     */
+    @ApiModelProperty(value = "验证mac地址(0:否,1:是)")
+    private Integer checkMacAddress;
 
 
 }

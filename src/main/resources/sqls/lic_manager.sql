@@ -41,6 +41,8 @@ CREATE TABLE IF NOT EXISTS `license`  (
   `gen_time` bigint NULL DEFAULT NULL COMMENT '生成时间',
   `expired_time` bigint NULL DEFAULT NULL COMMENT '过期时间',
   `consumer_amount` int NULL DEFAULT 1 COMMENT '用户数量',
+  `check_ip_address` int NULL DEFAULT 1 COMMENT '验证IP(0:否,1:是)',
+  `check_mac_address` int NULL DEFAULT 1 COMMENT '验证MAC(0:否,1:是)',
   `created_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `created_time` bigint NULL DEFAULT NULL COMMENT '创建时间',
   `updated_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',

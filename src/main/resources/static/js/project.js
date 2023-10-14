@@ -3,7 +3,6 @@ $(function () {
     initDate('#end');
     searchKeystore('#select-keystore');
     search();
-    okLoading.close(layui.jquery);
 })
 
 /**

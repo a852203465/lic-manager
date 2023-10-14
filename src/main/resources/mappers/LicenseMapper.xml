@@ -12,6 +12,8 @@
         <result column="gen_time" property="genTime"/>
         <result column="expired_time" property="expiredTime"/>
         <result column="consumer_amount" property="consumerAmount"/>
+        <result column="check_ip_address" property="checkIpAddress"/>
+        <result column="check_mac_address" property="checkMacAddress"/>
         <result column="created_user" property="createdUser"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_user" property="updatedUser"/>
@@ -29,6 +31,8 @@
         gen_time,
         expired_time,
         consumer_amount,
+        check_ip_address,
+        check_mac_address,
         created_user,
         created_time,
         updated_user,

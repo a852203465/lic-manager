@@ -11,17 +11,23 @@
 
     <link rel="stylesheet" href="css/font.css">
     <link rel="stylesheet" href="css/xadmin.css">
-    <link rel="stylesheet" href="plugins/loading/okLoading.css">
     <link rel="stylesheet" href="plugins/layui-v2.8.11/css/layui.css">
 
     <script src="plugins/jquery-3.7.0.min.js"></script>
-    <script type="text/javascript" src="plugins/loading/okLoading.js"></script>
     <script src="plugins/layui-v2.8.11/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/xadmin.js"></script>
     <script type="text/javascript" src="plugins/lodash.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/request.js"></script>
     <script type="text/javascript" src="js/license.js"></script>
+
+    <style>
+        .layui-form-item .layui-input-inline {
+            width: 370px !important;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -169,7 +175,7 @@
 <div id="details-form" style="display: none">
     <form class="layui-form" lay-filter="layui-details-form">
         <div class="layui-form-item">
-            <div class="layui-form-inline">
+            <div class="layui-inline">
                 <label for="details-project" class="layui-form-label">项目</label>
                 <div class="layui-input-inline">
                     <select lay-search="" disabled id="details-project" name="projectId">
@@ -177,32 +183,33 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label for="details-name" class="layui-form-label">
-                <span class="x-red">*</span>名称
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="details-name" name="name" autocomplete="off" required lay-verify="required|name"
-                       class="layui-input">
+            <div class="layui-inline">
+                <label for="details-name" class="layui-form-label">
+                    <span class="x-red">*</span>名称
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="details-name" name="name" autocomplete="off" required lay-verify="required|name"
+                           class="layui-input">
+                </div>
             </div>
         </div>
+
         <div class="layui-form-item">
-            <label for="details-subject" class="layui-form-label">
-                <span class="x-red">*</span>证书主题
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="details-subject" name="subject" autocomplete="off" required lay-verify="required|subject"
-                       class="layui-input">
+            <div class="layui-inline">
+                <label for="details-subject" class="layui-form-label">
+                    <span class="x-red">*</span>证书主题
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="details-subject" name="subject" autocomplete="off" required lay-verify="required|subject" class="layui-input">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label for="details-privateAlias" class="layui-form-label">
-                <span class="x-red">*</span>证书别名
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="details-privateAlias" disabled name="privateAlias" autocomplete="off"
-                       class="layui-input">
+            <div class="layui-inline">
+                <label for="details-privateAlias" class="layui-form-label">
+                    <span class="x-red">*</span>证书别名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="details-privateAlias" disabled name="privateAlias" autocomplete="off" class="layui-input">
+                </div>
             </div>
         </div>
 
@@ -216,30 +223,50 @@
         </div>
 
         <div class="layui-form-item">
-            <label for="details-consumerAmount" class="layui-form-label">
-                <span class="x-red">*</span>用户数量
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="details-consumerAmount" name="consumerAmount" required lay-verify="required|number" autocomplete="off"
-                       class="layui-input">
+            <div class="layui-inline">
+                <label for="checkIpAddress" class="layui-form-label">
+                    <span class="x-red">*</span>验证IP
+                </label>
+                <div class="layui-input-inline" id="checkIpAddress" style="width: 200px !important;">
+                    <input type="radio" name="checkIpAddress" value="1" title="是" checked>
+                    <input type="radio" name="checkIpAddress" value="0" title="否">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label for="checkMacAddress" class="layui-form-label">
+                    <span class="x-red">*</span>验证MAC
+                </label>
+                <div class="layui-input-inline" id="checkMacAddress" style="width: 200px !important;">
+                    <input type="radio" name="checkMacAddress" value="1" title="是" checked>
+                    <input type="radio" name="checkMacAddress" value="0" title="否">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label for="details-consumerAmount" class="layui-form-label">
+                    <span class="x-red">*</span>用户数量
+                </label>
+                <div class="layui-input-inline" style="width: 200px !important;">
+                    <input type="text" id="details-consumerAmount" name="consumerAmount" required lay-verify="required|number" autocomplete="off" class="layui-input">
+                </div>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label for="details-genTime" class="layui-form-label">生成时间</label>
-            <div class="layui-input-inline">
-                <input type="text" id="details-genTime" name="genTime" autocomplete="off"
-                       class="layui-input">
+            <div class="layui-inline">
+                <label for="details-expiredTime" class="layui-form-label">
+                    <span class="x-red">*</span>失效时间
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="details-expiredTime" name="expiredTime" autocomplete="off" required lay-verify="required|expiredTime" class="layui-input">
+                </div>
             </div>
-        </div>
 
-        <div class="layui-form-item">
-            <label for="details-expiredTime" class="layui-form-label">
-                <span class="x-red">*</span>失效时间
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="details-expiredTime" name="expiredTime" autocomplete="off" required lay-verify="required|expiredTime"
-                       class="layui-input">
+            <div class="layui-inline">
+                <label for="details-genTime" class="layui-form-label">生成时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="details-genTime" name="genTime" autocomplete="off" class="layui-input">
+                </div>
             </div>
         </div>
 

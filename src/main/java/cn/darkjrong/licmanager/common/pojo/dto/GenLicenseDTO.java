@@ -60,9 +60,25 @@ public class GenLicenseDTO implements Serializable {
     @ApiModelProperty(value = "描述", required = true)
     private String description;
 
+    /**
+     * 验证IP地址
+     */
+    @NotNull(message = "验证IP地址 不能为空")
+    @ApiModelProperty(value = "验证IP地址", required = true)
+    private Integer checkIpAddress;
 
+    /**
+     * 验证mac地址
+     */
+    @NotNull(message = "验证mac地址 不能为空")
+    @ApiModelProperty(value = "验证mac地址", required = true)
+    private Integer checkMacAddress;
 
+    public Integer getCheckIpAddress() {
+        return checkIpAddress == null ? 1 : checkIpAddress;
+    }
 
-
-
+    public Integer getCheckMacAddress() {
+        return checkMacAddress == null ? 1 : checkMacAddress;
+    }
 }

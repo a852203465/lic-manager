@@ -4,6 +4,7 @@ import cn.darkjrong.license.core.common.pojo.params.LicenseCreatorV2Param;
 import cn.darkjrong.license.core.common.utils.FileUtils;
 import cn.darkjrong.license.creator.service.FileService;
 import cn.darkjrong.license.creator.service.LicenseCreatorService;
+import cn.darkjrong.licmanager.common.constants.NumberConstant;
 import cn.darkjrong.licmanager.common.enums.ResponseEnum;
 import cn.darkjrong.licmanager.common.exceptions.LicenseWebException;
 import cn.darkjrong.licmanager.common.pojo.dto.GenLicenseDTO;
@@ -135,11 +136,15 @@ public class LicenseServiceImpl extends BaseServiceImpl<LicenseMapper, License, 
         byte[] privateKey = keystoreService.findPrivateKeyById(projectVO.getKeystore().getId());
 
         LicenseCreatorV2Param licenseCreatorV2Param = new LicenseCreatorV2Param();
-        BeanUtil.copyProperties(genLicenseDTO, licenseCreatorV2Param);
+        CopyOptions copyOptions = CopyOptions.create();
+        copyOptions.setIgnoreError(Boolean.TRUE);
+        BeanUtil.copyProperties(genLicenseDTO, licenseCreatorV2Param, copyOptions);
         licenseCreatorV2Param.setPrivateKeysStore(privateKey);
         licenseCreatorV2Param.setKeyPwd(projectVO.getKeystore().getPrivatePwd());
         licenseCreatorV2Param.setStorePwd(projectVO.getKeystore().getStorePwd());
         licenseCreatorV2Param.setExpiryTime(DateUtil.date(genLicenseDTO.getExpiredTime()));
+        licenseCreatorV2Param.setCheckIpAddress(ObjectUtil.equals(NumberConstant.ZERO, genLicenseDTO.getCheckIpAddress()) ? Boolean.FALSE : Boolean.TRUE);
+        licenseCreatorV2Param.setCheckMacAddress(ObjectUtil.equals(NumberConstant.ZERO, genLicenseDTO.getCheckMacAddress()) ? Boolean.FALSE : Boolean.TRUE);
 
         byte[] bytes = licenseCreatorService.generateLicense(licenseCreatorV2Param);
 

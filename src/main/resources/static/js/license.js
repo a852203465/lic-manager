@@ -3,7 +3,6 @@ $(function () {
     initDate('#end');
     searchProject('#select-project');
     search();
-    okLoading.close(layui.jquery);
 })
 
 /**
@@ -280,7 +279,17 @@ function validate(form) {
             var now = new Date();
             var time = new Date(value);
             if(time < now) return '失效时间必须大于当前时间';
-        }
+        },
+        checkIpAddress: function (value, item) {
+            if (_.isNil(value) || _.isEmpty(value)) {
+                return '是否验证IP地址不能为空';
+            }
+        },
+        checkMacAddress: function (value, item) {
+            if (_.isNil(value) || _.isEmpty(value)) {
+                return '是否验证MAC地址不能为空';
+            }
+        },
     });
 }
 
@@ -327,7 +336,7 @@ function details(data) {
 
         layer.open({
             type: 1,
-            area: [($(window).width() * 0.8) + 'px', ($(window).height()) + 'px'],
+            area: [($(window).width() * 0.7) + 'px', ($(window).height() - 100) + 'px'],
             fix: false, //不固定
             shadeClose: true,
             shade: 0.4,
@@ -345,6 +354,8 @@ function details(data) {
                     "genTime": ts2Time(data.genTime),
                     "expiredTime": ts2Time(data.expiredTime),
                     "description": data.description,
+                    "checkMacAddress": data.checkMacAddress,
+                    "checkIpAddress": data.checkIpAddress,
                 });
                 form.render("select");
             }

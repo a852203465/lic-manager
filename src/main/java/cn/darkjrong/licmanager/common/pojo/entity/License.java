@@ -68,6 +68,16 @@ public class License implements Serializable {
     private Integer consumerAmount;
 
     /**
+     * 验证IP地址(0:否,1:是)
+     */
+    private Integer checkIpAddress;
+
+    /**
+     * 验证mac地址(0:否,1:是)
+     */
+    private Integer checkMacAddress;
+
+    /**
      * 创建人
      */
     private String createdUser;
