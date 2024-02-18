@@ -128,7 +128,7 @@ public class LicenseServiceImpl extends BaseServiceImpl<LicenseMapper, License, 
         License license = this.getById(genLicenseDTO.getId());
         Assert.notNull(license, ResponseEnum.THE_LICENSE_DOES_NOT_EXIST.getMessage());
 
-        if (DateUtil.compare(DateUtil.date(genLicenseDTO.getExpiredTime()), DateUtil.date(), DatePattern.NORM_DATE_PATTERN) <= 0) {
+        if (DateUtil.compare(DateUtil.date(genLicenseDTO.getExpiredTime()), DateUtil.date(), DatePattern.NORM_DATETIME_PATTERN) <= 0) {
             throw new LicenseWebException(ResponseEnum.THE_END_TIME_CANNOT_BE_LESS_THAN_OR_EQUAL_TO_THE_CURRENT_TIME);
         }
 
